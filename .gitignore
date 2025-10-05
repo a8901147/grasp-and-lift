@@ -1,0 +1,23 @@
+# System files
+.DS_Store
+
+# Python virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Data files - It's generally not recommended to track large data files in Git
+data/
+
+# Output directories
+out/
+mycode/out/
+
+# ML models
+*.joblib
+
+# Ignoring the entire leadership_code directory as in the original file
+leadership_code/
+*.png
