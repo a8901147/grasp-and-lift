@@ -8,8 +8,13 @@ from sklearn.metrics import roc_auc_score
 from tqdm import tqdm
 
 # --- Configuration: Data Source ---
+# Dynamically find the project root and build the path to the data directory
+# This makes the script runnable from any location
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+DATA_DIR = os.path.join(PROJECT_ROOT, 'data', 'train')
+
 VALID_SERIES = range(7, 9)
-DATA_DIR = '../../data/train'
 # ---
 
 # --- Constants ---
