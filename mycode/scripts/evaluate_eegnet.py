@@ -1,3 +1,4 @@
+
 import os
 import sys
 import argparse
@@ -11,15 +12,10 @@ import torch
 # Adjust path to import from parent directory
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from models.eegnet import EEGNet
+from train_eegnet import ALL_CHANNELS, ALL_EVENTS # Import constants
 
 # --- Constants ---
 DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data/test'))
-ALL_CHANNELS = [
-    'Fp1', 'Fp2', 'F7', 'F3', 'Fz', 'F4', 'F8', 'FC5', 'FC1', 'FC2', 'FC6', 
-    'T7', 'C3', 'Cz', 'C4', 'T8', 'TP9', 'CP5', 'CP1', 'CP2', 'CP6', 'TP10', 
-    'P7', 'P3', 'Pz', 'P4', 'P8', 'PO9', 'O1', 'Oz', 'O2', 'PO10'
-]
-ALL_EVENTS = ['HandStart', 'FirstDigitTouch', 'BothStartLoadPhase', 'LiftOff', 'Replace', 'BothReleased']
 
 def predict_eegnet(
     subject, event, channels_to_use, model_dir, output_dir,
@@ -55,31 +51,17 @@ def predict_eegnet(
     for series_id in [9, 10]:
         if verbose: print(f"Processing Series {series_id}...")
         
-        # Load data
         data_file = f"{DATA_DIR}/subj{subject}_series{series_id}_data.csv"
         df_data = pd.read_csv(data_file)
         
-        # Scale the entire series data at once
         scaled_data = scaler.transform(df_data[channels_to_use])
         
-        # Use a buffer to build windows efficiently
-        # This buffer holds the last `window_size` samples
-        data_buffer = np.zeros((window_size, len(channels_to_use)))
-        
-        series_preds = []
-        
-        # The first (window_size - 1) frames cannot have a prediction
-        # as there is not enough preceding data.
-        # We will pad with zeros, which is a reasonable default for low-probability events.
-        series_preds.extend([0.0] * (window_size - 1))
+        series_preds = [0.0] * (window_size - 1)
 
-        # Create a generator for batches of windows to speed up prediction
         def window_batch_generator():
             window_batch = []
             for i in range(window_size - 1, len(scaled_data)):
-                # The window ends at index i
                 window = scaled_data[i - window_size + 1 : i + 1]
-                # Transpose to (n_channels, n_samples)
                 window_batch.append(window.T)
                 if len(window_batch) == batch_size:
                     yield np.array(window_batch)
@@ -88,46 +70,40 @@ def predict_eegnet(
                 yield np.array(window_batch)
 
         with torch.no_grad():
-            for batch_windows in tqdm(window_batch_generator(), total=int(np.ceil((len(scaled_data) - window_size + 1) / batch_size)), desc=f"Predicting Series {series_id}"):
+            total_batches = int(np.ceil((len(scaled_data) - window_size + 1) / batch_size))
+            pbar = tqdm(window_batch_generator(), total=total_batches, desc=f"Predicting Series {series_id}", leave=False)
+            for batch_windows in pbar:
                 inputs = torch.from_numpy(batch_windows).float().to(device)
                 outputs = model(inputs)
                 series_preds.extend(outputs.cpu().numpy().flatten().tolist())
 
-        # Create DataFrame for this series' predictions
-        pred_df = pd.DataFrame({
-            'id': df_data['id'],
-            event: series_preds
-        })
+        pred_df = pd.DataFrame({'id': df_data['id'], event: series_preds})
         all_predictions.append(pred_df)
 
     # 3. Combine and Save Results
     final_df = pd.concat(all_predictions).set_index('id')
-    
-    # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
     
-    # Check if a submission file already exists
     submission_file = os.path.join(output_dir, 'submission.csv')
     if os.path.exists(submission_file):
-        # Load existing file and update the column for the current event
         if verbose: print(f"Updating existing submission file: {submission_file}")
         existing_df = pd.read_csv(submission_file, index_col='id')
         existing_df[event] = final_df[event]
         existing_df.to_csv(submission_file)
     else:
-        # Create a new file with placeholder columns for other events
         if verbose: print(f"Creating new submission file: {submission_file}")
         for other_event in ALL_EVENTS:
             if other_event != event:
                 final_df[other_event] = 0
-        final_df = final_df[ALL_EVENTS] # Ensure correct column order
+        final_df = final_df[ALL_EVENTS]
         final_df.to_csv(submission_file)
 
     if verbose: print(f"Predictions for {event} saved.")
+    return submission_file
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate an EEGNet model.")
+    parser = argparse.ArgumentParser(description="Evaluate an EEGNet model (can be run standalone).")
     parser.add_argument('subject', type=int, help="Subject ID (e.g., 1).")
     parser.add_argument('event', help="Event name (e.g., 'HandStart').")
     parser.add_argument('--channels', default='all', help="Channels used for training: 'all' or a single channel name.")
@@ -137,7 +113,6 @@ def main():
     
     args = parser.parse_args()
 
-    # --- Validate Inputs ---
     event_name = next((e for e in ALL_EVENTS if e.lower() == args.event.lower()), None)
     if not event_name:
         print(f"Error: Invalid event name '{args.event}'.")
@@ -154,7 +129,6 @@ def main():
         channels_to_use = [channel_name]
         chan_str = channel_name
 
-    # --- Directory Logic ---
     run_name = f"subj-{args.subject}_chan-{chan_str}_evt-{event_name.lower()}"
     model_dir = os.path.join(args.model_dir_base, run_name, "model")
     output_dir = os.path.join(args.output_dir_base, run_name, "results")

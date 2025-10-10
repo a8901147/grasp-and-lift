@@ -1,3 +1,4 @@
+
 import os
 import sys
 import argparse
@@ -27,7 +28,7 @@ ALL_CHANNELS = [
 ALL_EVENTS = ['HandStart', 'FirstDigitTouch', 'BothStartLoadPhase', 'LiftOff', 'Replace', 'BothReleased']
 DEFAULT_TRAIN_SERIES = list(range(1, 9)) # Use Series 1-8 for training/validation split
 
-# --- Data Loading Functions (from original train.py) ---
+# --- Data Loading Functions (can be shared) ---
 def parse_series(series_str):
     series = []
     parts = series_str.split(',')
@@ -40,53 +41,39 @@ def parse_series(series_str):
             series.append(int(part))
     return series
 
-def load_data_for_series(subject, series_list, verbose=True):
+def load_data_for_series(subject, series_list, data_dir, verbose=True):
     all_dfs = []
-    desc = f"Loading train data for Subj {subject}"
-    for series in tqdm(series_list, desc=desc, disable=not verbose):
-        data_file = f"{DATA_DIR}/subj{subject}_series{series}_data.csv"
-        event_file = f"{DATA_DIR}/subj{subject}_series{series}_events.csv"
+    desc = f"Loading data for Subj {subject}"
+    for series in tqdm(series_list, desc=desc, disable=not verbose, leave=False):
+        data_file = f"{data_dir}/subj{subject}_series{series}_data.csv"
+        event_file = f"{data_dir}/subj{subject}_series{series}_events.csv"
         df_data = pd.read_csv(data_file, index_col='id')
         df_events = pd.read_csv(event_file, index_col='id')
         df_merged = df_data.join(df_events)
         all_dfs.append(df_merged)
     if not all_dfs:
-        raise FileNotFoundError(f"No data found for subject {subject} in series {list(series_list)} at {DATA_DIR}")
+        raise FileNotFoundError(f"No data found for subject {subject} in series {list(series_list)} at {data_dir}")
     return pd.concat(all_dfs)
 
 # --- PyTorch Dataset ---
 class EEGWindowDataset(Dataset):
-    """
-    Creates a windowed dataset for EEG time series.
-    For each time point, it creates a window of `window_size` samples ending at that point.
-    """
     def __init__(self, X, y, window_size, channels):
         self.X = X[channels].values
         self.y = y.values
         self.window_size = window_size
         self.channels = channels
-        
-        # The first (window_size - 1) samples cannot form a full window
         self.valid_indices = range(window_size - 1, len(self.X))
 
     def __len__(self):
         return len(self.valid_indices)
 
     def __getitem__(self, idx):
-        # Map the public index to the actual index in the data array
         actual_idx = self.valid_indices[idx]
-        
-        # Get the window of data ending at actual_idx
         start_idx = actual_idx - self.window_size + 1
         window_x = self.X[start_idx : actual_idx + 1]
-        
-        # The label corresponds to the end of the window
         label = self.y[actual_idx]
-        
-        # Transpose to (n_channels, n_samples) and convert to tensor
         tensor_x = torch.from_numpy(window_x.T).float()
         tensor_y = torch.tensor([label], dtype=torch.float32)
-        
         return tensor_x, tensor_y
 
 # --- Main Training Logic ---
@@ -100,12 +87,11 @@ def train_eegnet_model(
         print(f"--- Using train series: {train_series}, validation series: {val_series} ---")
 
     # 1. Load Data
-    df_train = load_data_for_series(subject, train_series, verbose)
-    df_val = load_data_for_series(subject, val_series, verbose)
+    df_train = load_data_for_series(subject, train_series, DATA_DIR, verbose)
+    df_val = load_data_for_series(subject, val_series, DATA_DIR, verbose)
 
     X_train_df = df_train[channels_to_use]
     y_train_df = df_train[event]
-    
     X_val_df = df_val[channels_to_use]
     y_val_df = df_val[event]
 
@@ -114,13 +100,11 @@ def train_eegnet_model(
     scaler = StandardScaler()
     scaler.fit(X_train_df)
     
-    # Save the scaler
-    scaler_path = os.path.join(output_dir, f"scaler.joblib")
+    scaler_path = os.path.join(output_dir, "scaler.joblib")
     os.makedirs(os.path.dirname(scaler_path), exist_ok=True)
     joblib.dump(scaler, scaler_path)
     if verbose: print(f"Scaler saved to {scaler_path}")
 
-    # Apply scaling
     X_train_scaled = pd.DataFrame(scaler.transform(X_train_df), columns=channels_to_use, index=X_train_df.index)
     X_val_scaled = pd.DataFrame(scaler.transform(X_val_df), columns=channels_to_use, index=X_val_df.index)
 
@@ -150,25 +134,21 @@ def train_eegnet_model(
     for epoch in range(epochs):
         model.train()
         running_loss = 0.0
-        
-        pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{epochs} [Training]")
+        pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{epochs} [Training]", leave=False)
         for i, (inputs, labels) in enumerate(pbar):
             inputs, labels = inputs.to(device), labels.to(device)
-            
             optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
-            
             running_loss += loss.item()
             pbar.set_postfix({'loss': running_loss / (i + 1)})
 
-        # Validation
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
-            pbar_val = tqdm(val_loader, desc=f"Epoch {epoch+1}/{epochs} [Validation]")
+            pbar_val = tqdm(val_loader, desc=f"Epoch {epoch+1}/{epochs} [Validation]", leave=False)
             for i, (inputs, labels) in enumerate(pbar_val):
                 inputs, labels = inputs.to(device), labels.to(device)
                 outputs = model(inputs)
@@ -177,13 +157,14 @@ def train_eegnet_model(
                 pbar_val.set_postfix({'val_loss': val_loss / (i + 1)})
 
     # 6. Save the final model
-    model_path = os.path.join(output_dir, f"model.pth")
+    model_path = os.path.join(output_dir, "model.pth")
     torch.save(model.state_dict(), model_path)
     if verbose: print(f"--- Model saved to: {model_path} ---")
+    return model_path, scaler_path
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train an EEGNet model.")
+    parser = argparse.ArgumentParser(description="Train an EEGNet model (can be run standalone).")
     parser.add_argument('subject', type=int, help="Subject ID (e.g., 1).")
     parser.add_argument('event', help="Event name (e.g., 'HandStart').")
     parser.add_argument('--channels', default='all', help="Channels to use: 'all' or a single channel name (e.g., 'Fp1').")
@@ -197,7 +178,6 @@ def main():
     
     args = parser.parse_args()
 
-    # --- Validate Inputs ---
     event_name = next((e for e in ALL_EVENTS if e.lower() == args.event.lower()), None)
     if not event_name:
         print(f"Error: Invalid event name '{args.event}'.")
@@ -214,7 +194,6 @@ def main():
         channels_to_use = [channel_name]
         chan_str = channel_name
     
-    # --- Directory Logic (mimicking baseline) ---
     run_name = f"subj-{args.subject}_chan-{chan_str}_evt-{event_name.lower()}"
     output_path = os.path.join(args.output_dir_base, run_name, "model")
     os.makedirs(output_path, exist_ok=True)
