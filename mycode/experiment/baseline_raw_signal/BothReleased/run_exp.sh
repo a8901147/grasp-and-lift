@@ -1,64 +1,70 @@
 #!/bin/bash
 
 # ##############################################################################
-# # Experiment 2: Flexible Baseline Analysis Framework
+# # Experiment Template
 # #
-# # This script is the main entry point for running baseline analyses.
-# # It calls the Python engine 'run_analysis.py' with specified parameters.
+# # This is a template for running experiments. To create a new experiment:
+# # 1. Copy this file into your new experiment directory (e.g., mycode/experiment/expX/).
+# # 2. Rename it to `run_exp.sh`.
+# # 3. Modify the `FEATURE_EXTRACTOR` variable below as needed.
 # ##############################################################################
 
 # --- Usage ---
 #
-# This script requires three arguments: subject, channel, and event.
+# This script runs the baseline analysis using raw EEG signals (no feature extraction).
 #
-# Run for a single subject:
-#   ./run_exp.sh <subject_id> <channel_name> <event_name>
-#   Example: ./run_exp.sh 1 Fp1 HandStart
+# Usage:
+#   ./run_exp.sh [subject] [channel] [event]
 #
-# Run for all subjects for a specific channel/event:
-#   ./run_exp.sh all C3 Replace
+# Arguments:
+#   [subject]: Subject ID (e.g., 1, 2). Defaults to 'all'.
+#   [channel]: Channel name (e.g., C3, Fp1). Defaults to 'all'.
+#   [event]:   Event name (e.g., FirstDigitTouch). Defaults to 'HandStart'.
 #
-# Run for all channels for a specific subject/event:
-#   ./run_exp.sh 5 all LiftOff
+# Examples:
+#   # Run analysis for Subject 1, Channel C4, for the default HandStart event
+#   ./run_exp.sh 1 C4
 #
-# Run for all subjects and all channels for a specific event:
-#   ./run_exp.sh all all HandStart
+#   # Run analysis for Subject 1 across all channels for the FirstDigitTouch event
+#   ./run_exp.sh 1 all FirstDigitTouch
+#
+#   # Run the full baseline analysis for all subjects and channels for the default HandStart event
+#   ./run_exp.sh all all
 #
 # ##############################################################################
 
 # --- Script Body ---
 
-# 1. Handle Help Flag
-if [[ "$1" == "--help" || "$1" == "-h" ]]; then
-    cat <<EOF
---- Usage ---
+# 1. Define Experiment Parameters
+# Separate positional args from flags
+POSITIONAL_ARGS=()
+QUIET_FLAG=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --quiet)
+            QUIET_FLAG="--quiet"
+            shift # past argument
+            ;;
+        *)
+            POSITIONAL_ARGS+=("$1") # save positional arg
+            shift # past argument
+            ;;
+    esac
+done
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
-This script requires three arguments: subject, channel, and event.
-
-Run for a single subject:
-  ./run_exp.sh <subject_id> <channel_name> <event_name>
-  Example: ./run_exp.sh 1 Fp1 HandStart
-
-Run for all subjects for a specific channel/event:
-  ./run_exp.sh all C3 Replace
-
-Run for all channels for a specific subject/event:
-  ./run_exp.sh 5 all LiftOff
-
-Run for all subjects and all channels for a specific event:
-  ./run_exp.sh all all HandStart
-EOF
-    exit 0
-fi
-
-# 2. Define Experiment Parameters
-# Use command-line arguments if provided; otherwise, fall back to the default values.
-SUBJECT_TARGET="${1:-1}"
+SUBJECT_TARGET="${1:-all}"
 CHANNEL_TARGET="${2:-all}"
 EVENT_TARGET="${3:-HandStart}"
 
-# 3. Get Script Directory and Log File Path
-# This ensures that scripts are found correctly and logs are saved in the same directory as the script.
+# --- TODO: CONFIGURE THIS FOR YOUR EXPERIMENT ---
+# Set the feature extractor to use.
+# - Leave empty ("") for the baseline model (raw signal).
+# - Set to "filterbank" to use the Filter Bank features.
+FEATURE_EXTRACTOR=""
+# -----------------------------------------
+
+# 2. Get Script Directory and Define Paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 LOG_FILE="${SCRIPT_DIR}/run_exp.log"
 FRAMEWORK_DIR="${SCRIPT_DIR}/../../../scripts"
@@ -69,22 +75,36 @@ MODEL_DIR="${SCRIPT_DIR}/model"
 mkdir -p "$OUTPUT_DIR"
 mkdir -p "$MODEL_DIR"
 
-# 4. Execute the Python Engine and Log Output
+# 3. Execute the Python Engine and Log Output
 echo "======================================================================" > "$LOG_FILE"
 echo "Starting Experiment: $(basename "$SCRIPT_DIR")" | tee -a "$LOG_FILE"
 echo "  - Subject(s): $SUBJECT_TARGET" | tee -a "$LOG_FILE"
 echo "  - Channel(s): $CHANNEL_TARGET" | tee -a "$LOG_FILE"
 echo "  - Event:      $EVENT_TARGET" | tee -a "$LOG_FILE"
+
+# Log the feature extractor being used
+if [ -z "$FEATURE_EXTRACTOR" ]; then
+    echo "  - Features:   <None (Raw Signal)>" | tee -a "$LOG_FILE"
+else
+    echo "  - Features:   $FEATURE_EXTRACTOR" | tee -a "$LOG_FILE"
+fi
+
 echo "  - Output Dir: $OUTPUT_DIR" | tee -a "$LOG_FILE"
+echo "  - Model Dir:  $MODEL_DIR" | tee -a "$LOG_FILE"
 echo "======================================================================" | tee -a "$LOG_FILE"
 echo "Output is being logged to: $LOG_FILE"
 
-# Call the main python analysis script, piping all output to tee.
-# '2>&1' redirects stderr to stdout.
-# 'tee -a' appends to the log file while also printing to the terminal.
-python3 "${FRAMEWORK_DIR}/run_analysis.py" "$SUBJECT_TARGET" "$CHANNEL_TARGET" "$EVENT_TARGET" --output_dir "$OUTPUT_DIR" --model_dir "$MODEL_DIR" 2>&1 | tee -a "$LOG_FILE"
+# Call the main python analysis script
+python3 "${FRAMEWORK_DIR}/run_analysis.py" \
+    "$SUBJECT_TARGET" \
+    "$CHANNEL_TARGET" \
+    "$EVENT_TARGET" \
+    --output_dir "$OUTPUT_DIR" \
+    --model_dir "$MODEL_DIR" \
+    --feature-extractor "$FEATURE_EXTRACTOR" \
+    $QUIET_FLAG 2>&1 | tee -a "$LOG_FILE"
 
-# 5. Check Exit Code and Finalize
+# 4. Check Exit Code and Finalize
 EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then
     echo "Error: Python script failed. Check log for details: $LOG_FILE" | tee -a "$LOG_FILE"
@@ -93,7 +113,8 @@ fi
 
 echo "======================================================================" | tee -a "$LOG_FILE"
 echo "Experiment Finished Successfully." | tee -a "$LOG_FILE"
-echo "Results are saved in: $LOG_FILE"
+echo "Results are saved in: $OUTPUT_DIR"
+echo "Log file is at: $LOG_FILE"
 echo "======================================================================"
 
 exit 0

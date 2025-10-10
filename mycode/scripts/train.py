@@ -36,11 +36,12 @@ def parse_series(series_str):
             series.append(int(part))
     return series
 
-def load_data_for_series(subject, series_list):
+def load_data_for_series(subject, series_list, event, channel, verbose=True):
     """Loads and combines data for a specific subject and list of series."""
     all_dfs = []
-    # Use tqdm for a progress bar during data loading
-    for series in tqdm(series_list, desc=f"Loading training data for Subj {subject}"):
+    # Use tqdm for a progress bar, but disable it in non-verbose mode
+    desc = f"Loading train data for Subj {subject} ({event}/{channel})"
+    for series in tqdm(series_list, desc=desc, disable=not verbose):
         data_file = f"{DATA_DIR}/subj{subject}_series{series}_data.csv"
         event_file = f"{DATA_DIR}/subj{subject}_series{series}_events.csv"
         df_data = pd.read_csv(data_file, index_col='id')
@@ -51,11 +52,12 @@ def load_data_for_series(subject, series_list):
         raise FileNotFoundError(f"No data found for subject {subject} in series {list(series_list)} at {DATA_DIR}")
     return pd.concat(all_dfs)
 
-def load_data(subject, series_list, event, channels):
+def load_data(subject, series_list, event, channels, verbose=True):
     """
     Loads data for a subject and series, then extracts features and target.
     """
-    df = load_data_for_series(subject, series_list)
+    # Assumes channels is a list with one item, which is how train_model calls it.
+    df = load_data_for_series(subject, series_list, event, channels[0], verbose=verbose)
     
     # Ensure all requested channels and the event column exist
     for col in channels + [event]:
@@ -66,7 +68,7 @@ def load_data(subject, series_list, event, channels):
     y_train = df[event]
     return X_train, y_train
 
-def train_model(subject, channel, event, output_dir, train_series=DEFAULT_TRAIN_SERIES, feature_extractor=None, filterbank_custom_freqs=None, model_filename=None):
+def train_model(subject, channel, event, output_dir, train_series=DEFAULT_TRAIN_SERIES, feature_extractor=None, filterbank_custom_freqs=None, model_filename=None, verbose=True):
     """
     Trains a model for a specific subject, channel, and event.
 
@@ -79,8 +81,9 @@ def train_model(subject, channel, event, output_dir, train_series=DEFAULT_TRAIN_
         feature_extractor (str, optional): The feature extractor to use. Defaults to None.
         filterbank_custom_freqs (list, optional): Custom frequencies for the FilterBank.
         model_filename (str, optional): Specific filename for the saved model.
+        verbose (bool): If True, prints progress messages.
     """
-    if not model_filename:
+    if verbose:
         print(f"--- Training: Subj {subject}, Channel {channel}, Event {event} ---")
         print(f"--- Using training series: {train_series} ---")
     
@@ -96,17 +99,15 @@ def train_model(subject, channel, event, output_dir, train_series=DEFAULT_TRAIN_
     # Define the model pipeline
     steps = []
     if feature_extractor == 'filterbank':
-        if not model_filename: # Only print during normal runs, not optimization
+        if verbose:
             print("--- Applying FilterBank feature extraction ---")
         
         if filterbank_custom_freqs:
-            # Use custom frequencies if provided
-            if not model_filename:
+            if verbose:
                 print(f"--- Using custom FilterBank frequencies: {[f[0] for f in filterbank_custom_freqs]} ---")
             steps.append(('filterbank', FilterBank(filters=filterbank_custom_freqs)))
         else:
-            # Use default frequencies
-            if not model_filename:
+            if verbose:
                 print("--- Using default FilterBank frequencies ---")
             steps.append(('filterbank', FilterBank()))
 
@@ -118,9 +119,12 @@ def train_model(subject, channel, event, output_dir, train_series=DEFAULT_TRAIN_
     # Train the model
     pipeline.fit(X_train, y_train)
     
+    # Create directory if it does not exist to prevent race conditions
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+
     # Save the model
     joblib.dump(pipeline, model_path)
-    if not model_filename:
+    if verbose:
         print(f"--- Model saved to: {model_path} ---")
 
 

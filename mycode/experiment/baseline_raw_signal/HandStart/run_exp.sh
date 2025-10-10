@@ -1,29 +1,68 @@
 #!/bin/bash
 
 # ##############################################################################
-# # Experiment 1: Baseline Model with Raw Signal
+# # Experiment Template
 # #
-# # This script runs the baseline analysis using raw single-channel EEG signals.
+# # This is a template for running experiments. To create a new experiment:
+# # 1. Copy this file into your new experiment directory (e.g., mycode/experiment/expX/).
+# # 2. Rename it to `run_exp.sh`.
+# # 3. Modify the `FEATURE_EXTRACTOR` variable below as needed.
 # ##############################################################################
 
 # --- Usage ---
 #
-# ./run_exp.sh <subject_id> <channel_name> <event_name>
-# Example (single subject, single channel):
-#   ./run_exp.sh 1 C3 HandStart
+# This script runs the baseline analysis using raw EEG signals (no feature extraction).
 #
-# Example (all subjects, all channels):
-#   ./run_exp.sh all all HandStart
+# Usage:
+#   ./run_exp.sh [subject] [channel] [event]
+#
+# Arguments:
+#   [subject]: Subject ID (e.g., 1, 2). Defaults to 'all'.
+#   [channel]: Channel name (e.g., C3, Fp1). Defaults to 'all'.
+#   [event]:   Event name (e.g., FirstDigitTouch). Defaults to 'HandStart'.
+#
+# Examples:
+#   # Run analysis for Subject 1, Channel C4, for the default HandStart event
+#   ./run_exp.sh 1 C4
+#
+#   # Run analysis for Subject 1 across all channels for the FirstDigitTouch event
+#   ./run_exp.sh 1 all FirstDigitTouch
+#
+#   # Run the full baseline analysis for all subjects and channels for the default HandStart event
+#   ./run_exp.sh all all
 #
 # ##############################################################################
 
 # --- Script Body ---
 
 # 1. Define Experiment Parameters
+# Separate positional args from flags
+POSITIONAL_ARGS=()
+QUIET_FLAG=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --quiet)
+            QUIET_FLAG="--quiet"
+            shift # past argument
+            ;;
+        *)
+            POSITIONAL_ARGS+=("$1") # save positional arg
+            shift # past argument
+            ;;
+    esac
+done
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
 SUBJECT_TARGET="${1:-all}"
 CHANNEL_TARGET="${2:-all}"
 EVENT_TARGET="${3:-HandStart}"
-FEATURE_EXTRACTOR=""  # Baseline experiment uses no feature extractor (raw signal)
+
+# --- TODO: CONFIGURE THIS FOR YOUR EXPERIMENT ---
+# Set the feature extractor to use.
+# - Leave empty ("") for the baseline model (raw signal).
+# - Set to "filterbank" to use the Filter Bank features.
+FEATURE_EXTRACTOR=""
+# -----------------------------------------
 
 # 2. Get Script Directory and Define Paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
@@ -42,21 +81,28 @@ echo "Starting Experiment: $(basename "$SCRIPT_DIR")" | tee -a "$LOG_FILE"
 echo "  - Subject(s): $SUBJECT_TARGET" | tee -a "$LOG_FILE"
 echo "  - Channel(s): $CHANNEL_TARGET" | tee -a "$LOG_FILE"
 echo "  - Event:      $EVENT_TARGET" | tee -a "$LOG_FILE"
-echo "  - Features:   <None (Raw Signal)>" | tee -a "$LOG_FILE"
+
+# Log the feature extractor being used
+if [ -z "$FEATURE_EXTRACTOR" ]; then
+    echo "  - Features:   <None (Raw Signal)>" | tee -a "$LOG_FILE"
+else
+    echo "  - Features:   $FEATURE_EXTRACTOR" | tee -a "$LOG_FILE"
+fi
+
 echo "  - Output Dir: $OUTPUT_DIR" | tee -a "$LOG_FILE"
 echo "  - Model Dir:  $MODEL_DIR" | tee -a "$LOG_FILE"
 echo "======================================================================" | tee -a "$LOG_FILE"
 echo "Output is being logged to: $LOG_FILE"
 
 # Call the main python analysis script
-# The --feature-extractor argument will be empty, defaulting to None in the Python script
 python3 "${FRAMEWORK_DIR}/run_analysis.py" \
     "$SUBJECT_TARGET" \
     "$CHANNEL_TARGET" \
     "$EVENT_TARGET" \
     --output_dir "$OUTPUT_DIR" \
     --model_dir "$MODEL_DIR" \
-    --feature-extractor "$FEATURE_EXTRACTOR" 2>&1 | tee -a "$LOG_FILE"
+    --feature-extractor "$FEATURE_EXTRACTOR" \
+    $QUIET_FLAG 2>&1 | tee -a "$LOG_FILE"
 
 # 4. Check Exit Code and Finalize
 EXIT_CODE=$?

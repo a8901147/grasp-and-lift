@@ -1,44 +1,45 @@
-### **實驗 1：評估不同 EEG 通道對 'HandStart' 事件預測能力的影響**
+### **Experiment 1: Baseline Model with Raw EEG Signal for "HandStart" Event**
 
-**1. 研究問題**
+**1. Research Question**
 
-本次實驗旨在探討不同 EEG 通道（如枕葉、中央、額葉等）在預測 'HandStart'（手部啟動）事件的表現差異。核心問題是：哪些單一通道或通道組具備最高的預測能力（AUC Score），從而能作為後續模型訓練的有效特徵子集？
+This experiment aims to establish a baseline performance for event prediction using raw EEG signals without any feature engineering. The central question is: Does the unprocessed EEG signal from a single channel contain sufficient information to predict the "HandStart" event with an accuracy significantly better than random chance? This baseline will serve as a benchmark to evaluate the effectiveness of future feature engineering and modeling improvements.
 
-**2. 方法論**
+**2. Methodology**
 
-*   **模型：**
-    *   （圖表本身未指明模型，但假設已使用一個標準的二分類模型，如邏輯迴歸或支持向量機 (SVM)，以單一通道特徵作為輸入，輸出 'HandStart' vs. 'Non-HandStart' 的預測。）
+*   **Model:**
+    *   Logistic Regression. This model was chosen for its simplicity and efficiency as a baseline classifier. It is configured with balanced class weights to handle imbalanced data.
 
-*   **特徵：**
-    *   **單通道特徵：** 每個箱形圖代表一個單一 EEG 通道所提取的特徵集。
-    *   （推測特徵可能包含時域或頻域特徵，例如：特定頻帶的功率、事件相關電位 (ERP) 幅值等。）
+*   **Features:**
+    *   Raw EEG signal data from a single channel at a time. No transformations or feature extraction methods were applied.
 
-*   **流程：**
-    1.  對所有 12 位受試者的 EEG 數據進行標準化預處理。
-    2.  對每個通道單獨提取一組特徵。
-    3.  使用一個標準分類器（假設如上）對每個通道特徵進行 'HandStart' 二分類任務訓練。
-    4.  使用受試者內（Within-Subject）交叉驗證策略進行性能評估。
-    5.  **主要評估指標：** AUC (Area Under the ROC Curve)。圖表展示了每個通道的 AUC Score 在所有 12 位受試者中的分佈。
+*   **Procedure:**
+    1.  **Data Splitting:** For each subject, data from series 1-6 were used for training, and series 7-8 were used for validation.
+    2.  **Training:** A separate model was trained for each of the 32 EEG channels for each of the 12 subjects. The training process involved a pipeline that first standardized the data using `StandardScaler` and then fed it to the `LogisticRegression` classifier.
+    3.  **Evaluation:** The performance of each model was evaluated using the Area Under the Receiver Operating Characteristic Curve (AUC). An average AUC score was then calculated across all 32 channels for each subject to provide a summary of overall performance.
 
-**3. 主要發現與分析**
+**3. Key Findings & Analysis**
 
-| 類別 | 代表通道 | AUC 區間 (中位數) | 關鍵觀察 |
-| :--- | :--- | :--- | :--- |
-| **表現最佳** | O1, Oz, Pz, P4, P3 | ~0.65 - 0.70 | 主要集中在 **枕葉 (O)** 和 **頂葉 (P)** 區域。中位數明顯高於其他區域，特別是 O1 和 Oz 的 AUC 中位數接近 0.70，顯示這些區域的腦電活動與 'HandStart' 事件有最強的單一通道預測相關性。 |
-| **表現中等** | P7, T7, PO9, CPO6, Fpz, FC5, Fz, T8, Fp1 | ~0.60 - 0.65 | 主要分佈在 **額葉 (F)**、**中央額葉 (FC)** 和 **顳葉 (T)** 區域。中位數集中在 0.60 左右，AUC 的變異性（箱體長度）較大。 |
-| **表現較差** | FC2, C3, C4, F4, FCz, Fc1, F8 | ~0.50 - 0.55 | 主要集中在 **中央 (C)** 和 **額葉 (F)** 區域。中位數最低，尤其是 FCz, F4, F8 接近 0.50，表示這些通道的單一特徵集預測效果接近隨機猜測，幾乎無法有效區分 'HandStart' 事件。 |
+The experiment was executed for all 12 subjects across all 32 channels. The average AUC scores for each subject are summarized below:
 
-*   **主導區域：** 結果強烈支持後方皮質區域（枕葉和頂葉）的通道 (O1, Oz, Pz, P4, P3) 在單通道預測 'HandStart' 事件中佔據主導地位，其 AUC 中位數明顯高於其他區域。
+| Subject | Average AUC |
+| :--- | :--- |
+| 1 | 0.5440 |
+| 2 | 0.6346 |
+| 3 | 0.5984 |
+| 4 | 0.5839 |
+| 5 | 0.5851 |
+| 6 | 0.5318 |
+| 7 | 0.5303 |
+| 8 | 0.5981 |
+| 9 | 0.5192 |
+| 10 | 0.5833 |
+| 11 | 0.5889 |
+| 12 | 0.5711 |
 
-*   **中央和額葉表現不佳：** 傳統上與運動相關的中央運動皮層 (C3, C4) 在單通道表現上並不突出（AUC 中位數約 0.55），這可能暗示運動準備相關的特徵（如 μ 和 β 節律的 ERD/ERS）在本實驗設定中，單獨使用時不如後方視覺和頂葉處理區域的信號來得有效。
+The results indicate that even with raw signals, most subjects show an average AUC score significantly above 0.5, suggesting that there is some predictive information present in the unprocessed EEG data. However, the performance is generally low and inconsistent across subjects, highlighting the need for more advanced signal processing.
 
-*   **變異性分析：** 某些表現優異的通道（如 O1, Oz）具有相對較窄的箱體，表明這些通道的優勢在不同受試者之間更具一致性。
+**4. Conclusion & Next Steps**
 
-**4. 結論與後續步驟**
+This experiment successfully established a baseline for the "HandStart" event. The key conclusion is that while raw EEG signals contain some predictive power, they are not sufficient for building a robust and accurate prediction model.
 
-*   **總結：** 本實驗成功地回答了研究問題。在預測 'HandStart' 事件中，**枕葉和頂葉區域**的通道 (O1, Oz, Pz, P4, P3) 表現最佳，AUC 中位數達 0.65-0.70，證明這些通道的特徵能最有效地獨立捕捉與事件相關的信號。
-
-*   **下一步 (Experiment 2) 設計方向：**
-    1.  **特徵子集優化：** 嘗試將表現最佳的 Top 5-10 個通道 (O1, Oz, Pz, P4, P3, P7, T7, PO9, CPO6, Fp2) 組合起來，作為一個降維後的特徵子集進行模型訓練，與使用所有通道的基準模型進行比較。
-    2.  **多通道組合模型：** 考慮使用能夠更好地處理空間信息的模型，如 CNN 或 Graph Neural Network (GNN)，來利用不同通道之間的協同作用，以進一步提升預測準確率。
-    3.  **時/頻域特徵細化：** 由於後方通道表現突出，下一個實驗應針對性地探索後方皮層在事件發生前/後的特定頻帶（如 α 波或 γ 波）功率變化，以確認這些變化是否為高 AUC 的主要驅動因素。
+Based on these findings, the next logical step is to investigate the impact of feature engineering. The subsequent experiment, **feature_filterbank_v1**, will apply a filter bank to the raw signals to extract frequency-based features and evaluate if this technique can significantly improve upon the baseline AUC scores.

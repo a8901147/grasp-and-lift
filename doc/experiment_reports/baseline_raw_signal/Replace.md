@@ -1,35 +1,45 @@
-### **Experiment 5: 各通道預測 Replace 事件之基準表現分析**
+### **Experiment 1: Baseline Model with Raw EEG Signal for "Replace" Event**
 
 **1. Research Question**
 
-*   本次實驗的核心問題是：在預測 `Replace`（物體放回）事件時，單一 EEG 通道的訊號是否包含足夠的預測資訊？
-*   本實驗旨在為 `Replace` 事件建立一個預測表現的基準線，評估每個通道的獨立貢獻，並識別出與該事件最相關的腦區。
+This experiment aims to establish a baseline performance for event prediction using raw EEG signals without any feature engineering. The central question is: Does the unprocessed EEG signal from a single channel contain sufficient information to predict the "Replace" event with an accuracy significantly better than random chance? This baseline will serve as a benchmark to evaluate the effectiveness of future feature engineering and modeling improvements.
 
 **2. Methodology**
 
 *   **Model:**
-    *   與先前實驗一致，腳本為每個通道獨立訓練一個分類模型。模型以 `.joblib` 格式保存，推斷為 Scikit-learn 中的標準分類器。
+    *   Logistic Regression. This model was chosen for its simplicity and efficiency as a baseline classifier. It is configured with balanced class weights to handle imbalanced data.
 
 *   **Features:**
-    *   模型訓練的特徵是單一 EEG 通道的原始時序數據。
+    *   Raw EEG signal data from a single channel at a time. No transformations or feature extraction methods were applied.
 
 *   **Procedure:**
-    1.  **數據範圍**: 涵蓋所有 12 位受試者。
-    2.  **迭代訓練**: 對每位受試者的 32 個 EEG 通道進行獨立的模型訓練與評估。
-    3.  **目標事件**: 預測的目標為 `Replace` 事件。
-    4.  **評估指標**: 使用 AUC 作為模型表現的主要評估指標。
-    5.  **結果可視化**: 為每位受試者生成各通道 AUC 表現的排序長條圖，並繪製整合所有受試者結果的盒鬚圖與熱力圖。
+    1.  **Data Splitting:** For each subject, data from series 1-6 were used for training, and series 7-8 were used for validation.
+    2.  **Training:** A separate model was trained for each of the 32 EEG channels for each of the 12 subjects. The training process involved a pipeline that first standardized the data using `StandardScaler` and then fed it to the `LogisticRegression` classifier.
+    3.  **Evaluation:** The performance of each model was evaluated using the Area Under the Receiver Operating Characteristic Curve (AUC). An average AUC score was then calculated across all 32 channels for each subject to provide a summary of overall performance.
 
 **3. Key Findings & Analysis**
 
-*   根據 `results` 目錄下的圖表（`subj*_Replace_channel_ranking.png` 及 `summary_*` 圖）分析：
-    *   **通道間的預測能力差異**: 不同通道在預測 `Replace` 事件上的表現存在顯著差異。
-    *   **高相關性腦區**: 觀察 `summary_heatmap.png` 和 `summary_channel_boxplot.png`，與 `Replace` 事件最相關的腦區似乎集中在額葉（frontal lobe）特別是前額葉皮質（prefrontal cortex），例如 Fp1, Fp2, F7, F8 等通道。這與預期相符，因為將物體放回指定位置需要更精細的運動控制、目標導向的規劃以及空間位置的判斷，而這些都與前額葉的功能密切相關。
-    *   **與前期事件的比較**: 與 `LiftOff` (exp4) 等純粹的運動執行事件相比，`Replace` 事件似乎引發了更多前額葉腦區的活動，這可能反映了任務結束階段更高的認知與決策需求。
+The experiment was executed for all 12 subjects across all 32 channels. The average AUC scores for each subject are summarized below:
+
+| Subject | Average AUC |
+| :--- | :--- |
+| 1 | 0.5612 |
+| 2 | 0.6187 |
+| 3 | 0.5189 |
+| 4 | 0.5155 |
+| 5 | 0.5010 |
+| 6 | 0.5883 |
+| 7 | 0.5412 |
+| 8 | 0.5314 |
+| 9 | 0.5366 |
+| 10 | 0.5827 |
+| 11 | 0.5611 |
+| 12 | 0.5618 |
+
+The results for the "Replace" event are consistent with other baseline experiments. The average AUC scores hover above 0.5, indicating some level of predictive capability from the raw signal, but the performance is not strong enough for a reliable model.
 
 **4. Conclusion & Next Steps**
 
-*   **結論**: 本次實驗成功地為 `Replace` 事件建立了單通道預測的基準表現。結果表明，單一通道，特別是位於前額葉皮質的通道，包含可用於預測物體放回動作的有效資訊。
-*   **Next Steps**:
-    *   **Experiment 5 (綜合分析)**: 已經對多個事件進行了基準分析，下一步可以進行一個綜合性的比較分析，探討不同事件對應的最佳預測通道分佈的異同。
-    *   **特徵工程**: 針對 `Replace` 事件，可以嘗試提取前額葉通道的頻譜特徵（如 alpha, beta 波段的能量變化），看是否能進一步提升模型性能。
+This experiment establishes a performance baseline for the "Replace" event. As with the other events, the raw EEG signal alone is not sufficient for high-performance prediction.
+
+The next step is to proceed with the **feature_filterbank_v1** experiment to see if feature engineering can improve these results.

@@ -20,60 +20,119 @@ ALL_CHANNELS = [
 ]
 ALL_EVENTS = ['HandStart', 'FirstDigitTouch', 'BothStartLoadPhase', 'LiftOff', 'Replace', 'BothReleased']
 
-def load_data_for_series(subject, series_list):
+def load_data_for_series(subject, series_list, event, channel, verbose=True):
+
     """Loads and combines data for a specific subject and list of series."""
+
     all_dfs = []
-    # Use tqdm for a progress bar, but keep it minimal for module use
-    for series in tqdm(series_list, desc=f"Loading validation data for Subj {subject}", leave=False):
+
+    # Use tqdm for a progress bar, but disable it in non-verbose mode
+
+    desc = f"Loading valid data for Subj {subject} ({event}/{channel})"
+
+    for series in tqdm(series_list, desc=desc, leave=False, disable=not verbose):
+
         data_file = f"{DATA_DIR}/subj{subject}_series{series}_data.csv"
+
         event_file = f"{DATA_DIR}/subj{subject}_series{series}_events.csv"
+
         df_data = pd.read_csv(data_file, index_col='id')
+
         df_events = pd.read_csv(event_file, index_col='id')
+
         df_merged = df_data.join(df_events)
+
         all_dfs.append(df_merged)
+
     if not all_dfs:
+
         raise FileNotFoundError(f"No data found for subject {subject} in series {list(series_list)} at {DATA_DIR}")
+
     return pd.concat(all_dfs)
 
-def evaluate_model(subject_id, channel, event, model_path):
+
+
+def evaluate_model(subject_id, channel, event, model_path, verbose=True):
+
     """
+
     Loads a pre-trained model and evaluates it, returning the AUC score.
+
     
+
     Args:
+
         subject_id (str): The identifier for the subject (for loading validation data).
+
         channel (str): The EEG channel to use as a feature.
+
         event (str): The target event for prediction.
+
         model_path (str): The full path to the trained model .joblib file.
+
+        verbose (bool): If True, prints progress messages.
+
         
+
     Returns:
+
         float: The calculated AUC score.
+
     """
-    print(f"--- Evaluating: Subj {subject_id}, Channel {channel}, Event {event} ---")
+
+    if verbose:
+
+        print(f"--- Evaluating: Subj {subject_id}, Channel {channel}, Event {event} ---")
+
+
 
     # 1. Load Model
+
     if not os.path.exists(model_path):
+
         raise FileNotFoundError(f"Model not found at {model_path}. Please provide a valid path.")
+
     model_pipeline = joblib.load(model_path)
 
+
+
     # 2. Load Validation Data
-    df_valid = load_data_for_series(subject_id, VALID_SERIES)
+
+    df_valid = load_data_for_series(subject_id, VALID_SERIES, event, channel, verbose=verbose)
+
+
 
     # 3. Prepare features (X) and target (y)
+
     if channel not in df_valid.columns:
+
         raise ValueError(f"Channel '{channel}' not found in the validation data.")
+
     if event not in df_valid.columns:
+
         raise ValueError(f"Event '{event}' not found in the validation data.")
+
         
+
     X_valid = df_valid[[channel]]
+
     y_valid = df_valid[event]
 
-    # 4. Evaluate Model and return AUC score
-    valid_probs = model_pipeline.predict_proba(X_valid)[:, 1]
-    auc_score = roc_auc_score(y_valid, valid_probs)
-    
-    print(f"--- AUC: {auc_score:.4f} ---")
-    return auc_score
 
+
+    # 4. Evaluate Model and return AUC score
+
+    valid_probs = model_pipeline.predict_proba(X_valid)[:, 1]
+
+    auc_score = roc_auc_score(y_valid, valid_probs)
+
+    
+
+    if verbose:
+
+        print(f"--- AUC for Subj {subject_id}, Channel {channel}, Event {event}: {auc_score:.4f} ---")
+
+    return auc_score
 import argparse
 
 def print_usage():

@@ -23,6 +23,23 @@
 # --- Script Body ---
 
 # 1. Define Experiment Parameters
+# Separate positional args from flags
+POSITIONAL_ARGS=()
+QUIET_FLAG=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --quiet)
+            QUIET_FLAG="--quiet"
+            shift # past argument
+            ;;
+        *)
+            POSITIONAL_ARGS+=("$1") # save positional arg
+            shift # past argument
+            ;;
+    esac
+done
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
 SUBJECT_TARGET="${1:-all}"
 CHANNEL_TARGET="${2:-all}"
 EVENT_TARGET="${3:-HandStart}"
@@ -71,7 +88,8 @@ python3 "${FRAMEWORK_DIR}/run_analysis.py" \
     "$EVENT_TARGET" \
     --output_dir "$OUTPUT_DIR" \
     --model_dir "$MODEL_DIR" \
-    --feature-extractor "$FEATURE_EXTRACTOR" 2>&1 | tee -a "$LOG_FILE"
+    --feature-extractor "$FEATURE_EXTRACTOR" \
+    $QUIET_FLAG 2>&1 | tee -a "$LOG_FILE"
 
 # 4. Check Exit Code and Finalize
 EXIT_CODE=$?

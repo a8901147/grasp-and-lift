@@ -1,0 +1,267 @@
+======================================================================
+Starting Experiment: optimize_filterbank_freqs
+  - Subject(s): 1
+  - Channel(s): O2
+  - Event:      handstart
+  - Features:   filterbank (Optimization Mode)
+  - Output Dir: /Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/optimize_filterbank_freqs/subj1_O2_handstart
+  - Model Dir:  /Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/optimize_filterbank_freqs/subj1_O2_handstart/temp_models
+======================================================================
+--- Running in Hyperparameter Optimization Mode ---
+
+--- Iteration 1/50 ---
+Testing Frequencies: [0.8168886881742098, 1.3668695797323276, 4.559382000545539, 6.193700315892974, 8.337498258560775, 10.399899663272011, 16.755493351795202, 22.669668889112174, 29.428668179219407, 42.55621931064197]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.16it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.96it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.60it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.36it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.18it/s]
+  -> Average AUC for this iteration: 0.6591
+
+--- Iteration 2/50 ---
+Testing Frequencies: [0.15077042112439026, 2.4439975445336497, 4.877105418031501, 5.001557531682029, 9.976634677873653, 12.469926038510867, 17.669918962929685, 20.05653044175774, 28.23062425041416, 41.673422621808726]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.27it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.63it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.98it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.17it/s]
+  -> Average AUC for this iteration: 0.6696
+
+--- Iteration 3/50 ---
+Testing Frequencies: [0.45987487454373, 1.0933313264272309, 4.9475110376829186, 5.465542680860609, 7.271819303598463, 12.47354403733235, 16.294771947602978, 27.86584708645431, 32.6676289324798, 44.01958284715425]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.22it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.66it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.40it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.07it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.23it/s]
+  -> Average AUC for this iteration: 0.6590
+
+--- Iteration 4/50 ---
+Testing Frequencies: [0.7122767847290018, 1.9009985039390862, 3.026529922319733, 6.884403511369706, 8.689864653536619, 11.541666010159664, 14.095797513321285, 21.84715060497719, 30.41025466026012, 42.78284463177821]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.21it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.66it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.41it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6667
+
+--- Iteration 5/50 ---
+Testing Frequencies: [0.6489969920043589, 2.666389823472329, 3.3467293070155444, 5.782121215146482, 7.546708263364187, 13.02144564127061, 16.550935246947468, 21.66353330294551, 33.67700327819992, 38.21919304718891]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.33it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.64it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.41it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.21it/s]
+  -> Average AUC for this iteration: 0.6655
+
+--- Iteration 6/50 ---
+Testing Frequencies: [0.8580562971354988, 1.8995082667395315, 3.7903004720036293, 6.853317731587589, 9.181815987569262, 11.306163075223342, 17.422663846432396, 24.16667408020659, 37.611720243493494, 43.91173694074706]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.28it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.96it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.60it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.18it/s]
+  -> Average AUC for this iteration: 0.6633
+
+--- Iteration 7/50 ---
+Testing Frequencies: [0.7725880991236429, 2.0793842647781595, 4.173502331327697, 6.930510614528276, 8.821102743060054, 11.103996728090173, 15.777641034224494, 21.32213551250402, 28.15636406741194, 40.963810364944585]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.31it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.62it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.38it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.05it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.21it/s]
+  -> Average AUC for this iteration: 0.6625
+
+--- Iteration 8/50 ---
+Testing Frequencies: [0.45539336635801286, 1.5869763494360765, 3.028159645430169, 5.39768480817761, 9.13402585824595, 13.160702162124824, 17.63575984868607, 27.410407028106793, 34.510770255019445, 44.40471772880647]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.39it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.64it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.37it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.19it/s]
+  -> Average AUC for this iteration: 0.6687
+
+--- Iteration 9/50 ---
+Testing Frequencies: [0.8650347200108196, 1.898901348276407, 3.1908202329808226, 5.741636504396533, 9.006523757990822, 12.663689426469986, 17.547786726246365, 22.197774343920514, 33.61243425847701, 40.68048812327653]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.25it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.02it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.66it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.39it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.03it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.21it/s]
+  -> Average AUC for this iteration: 0.6655
+
+--- Iteration 10/50 ---
+Testing Frequencies: [0.9745408858501936, 2.697827648532168, 4.443459042329747, 5.471969839497912, 7.768204968283972, 10.161734358153726, 18.263977338114724, 20.88712656649465, 32.393365018657704, 39.41203441634777]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.37it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.04it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.69it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.39it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.23it/s]
+  -> Average AUC for this iteration: 0.6650
+
+--- Iteration 11/50 ---
+Testing Frequencies: [0.1471049882078575, 2.8576080399955806, 3.024275993633518, 6.167269296509668, 9.974551842516277, 12.229264767989488, 17.753967727260143, 22.407306788032706, 36.02563774319136, 41.07876613091834]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.43it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.00it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.63it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.37it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6669
+
+--- Iteration 12/50 ---
+Testing Frequencies: [0.12442661861017934, 2.993134718906536, 4.906637644232018, 6.667312929470181, 8.791985969301953, 11.880326738792354, 15.322364136366945, 22.095115181543267, 30.619218163946833, 38.62266384177748]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.39it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.71it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.45it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.07it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.26it/s]
+  -> Average AUC for this iteration: 0.6532
+
+--- Iteration 13/50 ---
+Testing Frequencies: [0.44705232986584864, 1.1826620521711513, 3.0111217819638094, 6.928736630302463, 9.06575643223064, 12.234669232434271, 14.844763805999715, 27.829127439383825, 35.394034995702036, 44.22376243012652]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.55it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.09it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.07it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.72it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.46it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.10it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.28it/s]
+  -> Average AUC for this iteration: 0.6684
+
+--- Iteration 14/50 ---
+Testing Frequencies: [0.37302101990664827, 1.850557231688465, 3.8143153862571206, 5.003608876686324, 9.097074277354368, 12.661205494657146, 17.35333753582345, 27.628310446189726, 29.117567655814646, 42.98852856894976]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.46it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.01it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.62it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.39it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.06it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.22it/s]
+  -> Average AUC for this iteration: 0.6668
+
+--- Iteration 15/50 ---
+Testing Frequencies: [0.3503108709626437, 2.3684128092360712, 3.036334481589017, 5.076625323592576, 8.844074000490313, 13.995824563545435, 15.32937723219748, 20.270765077345935, 30.187700627184118, 42.89648687575011]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.33it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.06it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.71it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.46it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.10it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.27it/s]
+  -> Average AUC for this iteration: 0.6709
+
+--- Iteration 16/50 ---
+Testing Frequencies: [0.3239005318501046, 1.309780602798934, 3.0103759467112186, 5.018035123230443, 7.045203566314309, 10.62757388862077, 15.74174045144405, 25.051873187236424, 32.74883027797154, 39.28379526783296]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.34it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.01it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.60it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.19it/s]
+  -> Average AUC for this iteration: 0.6702
+
+--- Iteration 17/50 ---
+Testing Frequencies: [0.9774992716634602, 1.9125343866571904, 4.936828709148661, 5.012156173201921, 9.057417888649553, 10.447848938100265, 14.308160135315351, 20.361099504624, 37.6024290245383, 39.17536917720272]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.34it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.06it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.70it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.45it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.22it/s]
+  -> Average AUC for this iteration: 0.6592
+
+--- Iteration 18/50 ---
+Testing Frequencies: [0.37881493920716003, 2.0930501951883294, 5.0, 5.0, 9.885861451174176, 13.350990171042373, 20.0, 24.603256279793683, 28.012934565504153, 44.78908741569554]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.33it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.62it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.35it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.19it/s]
+  -> Average AUC for this iteration: 0.6652
+
+--- Iteration 19/50 ---
+Testing Frequencies: [0.8969742351353504, 1.8029189377086112, 3.0142234321025563, 5.131503287304762, 9.90966751574506, 13.120899185179944, 19.965639168654224, 27.813235291151308, 29.363032992776276, 43.72838140446832]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.25it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.59it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.23it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.94it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.13it/s]
+  -> Average AUC for this iteration: 0.6666
+
+--- Iteration 20/50 ---
+Testing Frequencies: [0.10804478965496923, 2.0596044207624287, 3.0044033512147434, 5.502837280392908, 8.217174528602559, 13.567097361282926, 16.881027686452317, 24.099478080137136, 36.455128963330864, 38.08752167566139]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.37it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.03it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.67it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.40it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.05it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.23it/s]
+  -> Average AUC for this iteration: 0.6540
+
+--- Iteration 21/50 ---
+Testing Frequencies: [0.9509569224237415, 2.6729289989482705, 3.0673137495171385, 5.77876306425806, 7.05625733084056, 12.898644536724607, 16.52179989313757, 24.606293410731038, 36.39129396280916, 41.88120860578683]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.24it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.96it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.61it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.18it/s]
+  -> Average AUC for this iteration: 0.6660
+
+--- Iteration 22/50 ---
+Testing Frequencies: [0.2734296262002583, 2.494643725499712, 4.722242984563309, 6.929761262209229, 9.992290561573197, 10.166776948320782, 17.489699930283553, 21.78968624874778, 32.06796568377935, 38.158111001295644]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:01,  4.95it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.64it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.42it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.03it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6727
+
+--- Iteration 23/50 ---
+Testing Frequencies: [0.3121394251466387, 2.065170640457144, 4.850920523737035, 5.784757765383218, 9.75407479512348, 13.75414995407837, 14.03968815565668, 22.430867906766178, 29.09037088636724, 38.10175901303346]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.24it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.93it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.55it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.17it/s]
+  -> Average AUC for this iteration: 0.6646
+
+--- Iteration 24/50 ---
+Testing Frequencies: [0.3289378886647205, 2.301174576963046, 4.539389238745189, 5.52963044833289, 7.023816318389872, 13.966403134596105, 19.42406115956554, 24.5724352871675, 31.049298359106935, 38.20694711083342]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.36it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.03it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.03it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.67it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.37it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.21it/s]
+  -> Average AUC for this iteration: 0.6677
+
+--- Iteration 25/50 ---
+Testing Frequencies: [0.14264797360063894, 2.099809268096793, 3.2955315886807868, 6.825799075076828, 8.052366861217292, 13.607713655192539, 14.748043646340232, 25.2564973729701, 35.72849496580216, 44.89175525027857]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.36it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.96it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.61it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.36it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6615
+
+--- Iteration 26/50 ---
+Testing Frequencies: [0.615446657785097, 2.9926145600761282, 4.76726166394427, 5.026034395479307, 7.194587689564488, 10.044327330266679, 14.517850012713119, 22.135267946397196, 30.671529480501952, 38.08116211442164]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.31it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.95it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.92it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.57it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.33it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.17it/s]
+  -> Average AUC for this iteration: 0.6657
+
+--- Iteration 27/50 ---
+Testing Frequencies: [0.28518408734077183, 1.1653550219019773, 4.924259046977374, 5.218275328966175, 8.75699811880337, 12.234802210555822, 16.673131356123267, 23.21725826526549, 30.316572284296566, 44.88434987046305]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.25it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.95it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.90it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.52it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.32it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.16it/s]
+  -> Average AUC for this iteration: 0.6600
+
+--- Iteration 28/50 ---
+Testing Frequencies: [0.6817849847419164, 2.169660777522903, 4.894342267099427, 5.5072130575102225, 9.942172114442826, 12.557238375653377, 19.67863163309338, 25.301669109192698, 37.824395490135366, 42.32329362090893]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.28it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.62it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.38it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.21it/s]
+  -> Average AUC for this iteration: 0.6628
+
+--- Iteration 29/50 ---
+Testing Frequencies: [0.32104283040890635, 1.132867108537427, 3.9084925844452982, 6.855669277976206, 7.054829022307773, 10.21042725236753, 19.067520164763415, 20.019084234889434, 31.057070271144863, 44.294831618195246]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.20it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.95it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.95it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.56it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.36it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.98it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.16it/s]
+  -> Average AUC for this iteration: 0.6633
+
+--- Iteration 30/50 ---
+Testing Frequencies: [0.25521824446231123, 1.6617302749993748, 3.056417350755386, 6.526363640893852, 7.829480496092978, 11.57191609341147, 15.969836861671775, 27.34343814496666, 28.214299832536682, 43.81264667202515]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.32it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.02it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.68it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.42it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.07it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.24it/s]
+  -> Average AUC for this iteration: 0.6821
+
+--- Iteration 31/50 ---
+Testing Frequencies: [0.9253253971496808, 1.1835648866320636, 3.013090828181406, 5.309096636115284, 7.716272143670208, 12.397333862008198, 19.464755096692308, 24.9523575466738, 28.137958688410286, 38.324715511979946]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.29it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.02it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.67it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.41it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.06it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.23it/s]
+  -> Average AUC for this iteration: 0.6677
+
+--- Iteration 32/50 ---
+Testing Frequencies: [0.9272769287525319, 1.658766850304095, 3.067000969396455, 5.744510957673219, 7.562115534236377, 10.933569969712956, 19.140129643560773, 25.27899538594156, 29.04608537555471, 44.83521950644443]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.30it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.94it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.95it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.59it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.38it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.18it/s]
+  -> Average AUC for this iteration: 0.6670
+
+--- Iteration 33/50 ---
+Testing Frequencies: [0.9832552222877485, 1.720179243823801, 3.0737859380318646, 6.9374801807850695, 7.411197093794086, 10.27092539216352, 14.822179357142076, 24.543962759551434, 28.340616608482392, 42.280705444518446]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.35it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.63it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.40it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.99it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6655
+
+--- Iteration 34/50 ---
+Testing Frequencies: [0.16756450411399526, 2.211429875091791, 3.112822671117808, 6.8202520950481915, 7.343139539279106, 10.555728478507843, 17.173000246074427, 22.124893621534884, 28.22847134272971, 38.09325945239634]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.34it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.99it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.64it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.39it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.03it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6880
+
+--- Iteration 35/50 ---
+Testing Frequencies: [0.15112193803390275, 2.821258152921455, 3.340341810687516, 5.757909765229165, 7.704191711557118, 11.179968535787443, 18.365186898902266, 22.34002220625316, 28.64379698213484, 44.42487518195759]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.37it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.05it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.69it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.39it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.98it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6720
+
+--- Iteration 36/50 ---
+Testing Frequencies: [0.44409296540842647, 1.3826366461888964, 3.1019444304787682, 5.29694022840164, 7.06000034111986, 11.915892556715681, 17.894206888166515, 24.880436660857804, 28.325422911646577, 42.553851445629874]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.35it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.60it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.01it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.18it/s]
+  -> Average AUC for this iteration: 0.6686
+
+--- Iteration 37/50 ---
+Testing Frequencies: [0.20016643851186633, 2.4529161353564657, 3.1561195894957756, 6.142590568894073, 9.560383199237108, 10.0, 14.36375348242285, 24.34280745165915, 28.910503980455026, 41.39383180844103]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.34it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.04it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.03it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.64it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.35it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.99it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.19it/s]
+  -> Average AUC for this iteration: 0.6991
+
+--- Iteration 38/50 ---
+Testing Frequencies: [0.20107356202424306, 1.0242134749245595, 4.945528564650999, 5.41904106474006, 9.691794149740563, 10.085459885104894, 14.310736635392873, 20.40612503803308, 30.75802374759961, 40.61112425622605]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.25it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.03it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.01it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.65it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.19it/s]
+  -> Average AUC for this iteration: 0.6948
+
+--- Iteration 39/50 ---
+Testing Frequencies: [0.21064630347134522, 2.9738268339894756, 4.996593366490787, 6.151179608972784, 8.504448275107341, 13.126761935695011, 19.79000201943941, 23.27985857961471, 33.629626227882454, 42.10349323199155]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.31it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.62it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.02it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.19it/s]
+  -> Average AUC for this iteration: 0.6997
+
+--- Iteration 40/50 ---
+Testing Frequencies: [0.2022723419199674, 1.2261156485152176, 3.2152085859327575, 5.12590434037197, 8.126784224742693, 13.690459027145232, 15.653846706925906, 22.144205924799426, 34.42018427189823, 44.18159743946022]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.28it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.95it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.93it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.56it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.33it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.01it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.17it/s]
+  -> Average AUC for this iteration: 0.7020
+
+--- Iteration 41/50 ---
+Testing Frequencies: [0.20879345589680598, 2.5205865890857218, 3.2147976118124446, 6.922771391939633, 7.131139424682378, 10.418291942531559, 19.363121301603044, 21.907204840677384, 28.782043639025552, 39.48496692692995]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.21it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.93it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.93it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.58it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.35it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.04it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.19it/s]
+  -> Average AUC for this iteration: 0.6985
+
+--- Iteration 42/50 ---
+Testing Frequencies: [0.5385603031098344, 2.832184378449635, 3.062542018758674, 5.314680328189673, 7.717853267268389, 13.904217183603196, 16.109558837345958, 26.693409367248307, 37.3103720910753, 43.148784591579776]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.23it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.62it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.37it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.05it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.20it/s]
+  -> Average AUC for this iteration: 0.6669
+
+--- Iteration 43/50 ---
+Testing Frequencies: [0.19432306557539378, 2.639102310992108, 3.2065802556941696, 6.679098648491328, 8.36958009069512, 13.793961979716087, 18.60641162969472, 26.736294303928968, 31.853018997425984, 39.472411763331955]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.13it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.94it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.91it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.53it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.34it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.03it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.17it/s]
+  -> Average AUC for this iteration: 0.6995
+
+--- Iteration 44/50 ---
+Testing Frequencies: [0.23007765694191873, 2.6427839082459785, 3.3039957801665802, 6.441753779758081, 7.604553048287787, 12.090175033255075, 17.872428621697818, 20.43913282384338, 37.66473988434359, 38.04592798805391]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.25it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.85it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.50it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.29it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.14it/s]
+  -> Average AUC for this iteration: 0.6908
+
+--- Iteration 45/50 ---
+Testing Frequencies: [0.5763037579240402, 1.0359206603211253, 4.882851982494177, 5.706314580473384, 7.160606597161352, 10.21239292417651, 17.615016543156102, 25.13345274021651, 28.717875352073815, 43.0392872009436]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.01it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.89it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:01<00:01,  2.84it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.45it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.23it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.85it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.04it/s]
+  -> Average AUC for this iteration: 0.6584
+
+--- Iteration 46/50 ---
+Testing Frequencies: [0.22477347353908084, 1.0051004103834753, 3.8782813875569753, 6.220473760537095, 7.252701812495507, 11.649192705328026, 19.73895847677536, 20.02658329061432, 28.459502384063263, 40.04123825206318]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.17it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.97it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.59it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.37it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.93it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.14it/s]
+  -> Average AUC for this iteration: 0.6884
+
+--- Iteration 47/50 ---
+Testing Frequencies: [0.18915474892375117, 1.8820726551855542, 4.900400152552914, 6.745742289471194, 9.86184311309288, 13.918252873396057, 17.94171038242838, 26.729569880495163, 36.34106219988528, 40.593571266919966]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.27it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.01it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.01it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.67it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.42it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.07it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.24it/s]
+  -> Average AUC for this iteration: 0.6936
+
+--- Iteration 48/50 ---
+Testing Frequencies: [0.2281759500322439, 2.934122653781, 4.252091493669762, 6.057684993344302, 8.148037900248797, 11.68453262666533, 16.68145787725684, 27.892360550748226, 29.38422374241492, 42.01561237215047]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.01it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.88it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:01<00:01,  2.87it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.49it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.26it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  2.79it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.01it/s]
+  -> Average AUC for this iteration: 0.6919
+
+--- Iteration 49/50 ---
+Testing Frequencies: [0.49737059973945963, 1.0045596771749834, 3.1482175446686482, 5.258405686270635, 8.389781099647548, 10.023423529365497, 16.224734192647993, 23.552594747678867, 35.34307772523566, 43.86058247236491]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.19it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  2.98it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:01,  2.96it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.60it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.35it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.00it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.17it/s]
+  -> Average AUC for this iteration: 0.6667
+
+--- Iteration 50/50 ---
+Testing Frequencies: [0.18002966693558198, 1.0208740810771428, 3.610876056040651, 5.256459426490767, 7.745798428498301, 10.474833828196742, 19.56743329318526, 25.704673096540873, 33.06954263088396, 40.67924147451876]
+Loading train data for Subj 1 (HandStart/O2):   0%|          | 0/6 [00:00<?, ?it/s]Loading train data for Subj 1 (HandStart/O2):  17%|█▋        | 1/6 [00:00<00:00,  5.30it/s]Loading train data for Subj 1 (HandStart/O2):  33%|███▎      | 2/6 [00:00<00:01,  3.00it/s]Loading train data for Subj 1 (HandStart/O2):  50%|█████     | 3/6 [00:00<00:00,  3.01it/s]Loading train data for Subj 1 (HandStart/O2):  67%|██████▋   | 4/6 [00:01<00:00,  3.67it/s]Loading train data for Subj 1 (HandStart/O2):  83%|████████▎ | 5/6 [00:01<00:00,  3.42it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.08it/s]Loading train data for Subj 1 (HandStart/O2): 100%|██████████| 6/6 [00:01<00:00,  3.24it/s]
+  -> Average AUC for this iteration: 0.6950
+
+--- Optimization Finished ---
+Best Average AUC: 0.7020
+Best Frequencies: [0.2022723419199674, 1.2261156485152176, 3.2152085859327575, 5.12590434037197, 8.126784224742693, 13.690459027145232, 15.653846706925906, 22.144205924799426, 34.42018427189823, 44.18159743946022]
+Results saved to: /Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/optimize_filterbank_freqs/subj1_O2_handstart/optimization_results.txt
+======================================================================
+Experiment Finished Successfully.
