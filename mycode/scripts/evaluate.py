@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 # --- Configuration: Data Source ---
 VALID_SERIES = range(7, 9)
-DATA_DIR = '/Users/jeremmy/Desktop/grasp-and-lift/data/train'
+DATA_DIR = '../../data/train'
 # ---
 
 # --- Constants ---
