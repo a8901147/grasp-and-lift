@@ -1,0 +1,23 @@
+=======================================================================
+Starting EEGNet Experiment: Subject 1, Event HandStart, Channels all
+Timestamp: Fri Oct 10 13:46:08 CST 2025
+=======================================================================
+Configuration:
+  - Experiment Dir: /Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/eegnet_raw_signal/HandStart/../../../..//mycode/experiment/eegnet_raw_signal/
+  - Log File: /Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/eegnet_raw_signal/HandStart/../../../..//mycode/experiment/eegnet_raw_signal//run_exp.log
+  - Epochs: 1
+  - Batch Size: 64
+  - Learning Rate: 0.001
+  - Window Size: 500
+-----------------------------------------------------------------------
+Step 1: Starting Training...
+Output will be saved to: /Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/eegnet_raw_signal/HandStart/../../../..//mycode/experiment/eegnet_raw_signal/subj-1_chan-all_evt-handstart/model
+Traceback (most recent call last):
+  File "/Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/eegnet_raw_signal/HandStart/../../../..//mycode/scripts/train_eegnet.py", line 240, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jeremmy/Desktop/grasp-and-lift/mycode/experiment/eegnet_raw_signal/HandStart/../../../..//mycode/scripts/train_eegnet.py", line 224, in main
+    val_series_list = parse_series(args.val-series)
+                                   ^^^^^^^^
+AttributeError: 'Namespace' object has no attribute 'val'
+Error: Training script failed. See log for details.
