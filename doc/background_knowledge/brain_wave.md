@@ -1,13 +1,13 @@
-# 腦波 (Brain Waves) 基礎知識
+# Brain Waves Basics
 
-腦波是腦神經細胞活動時產生的電氣信號，可通過腦電圖 (EEG) 進行測量。不同的腦波頻率與不同的大腦狀態（如睡眠、放鬆、專注等）密切相關。
+Brain waves are electrical signals produced by the activity of neurons, which can be measured using an Electroencephalogram (EEG). Different brain wave frequencies are closely associated with different states of the brain, such as sleep, relaxation, and focus.
 
-## 主要腦波類型及其特徵
+## Main Brain Wave Types and Their Characteristics
 
-| 波段 (Band) | 頻率 (Frequency, Hz) | 主要相關狀態與功能 | 備註 |
+| Band | Frequency (Hz) | Key Associated States and Functions | Notes |
 | :--- | :--- | :--- | :--- |
-| **Delta (δ)** | 0.5 – 4 Hz | 深度睡眠、嬰兒睡眠、某些腦部疾病 | **最低頻率**。通常代表無意識或深度休息狀態。 |
-| **Theta (θ)** | 4 – 8 Hz | 淺層睡眠、極度放鬆、冥想、記憶與導航 | **慢波**。與注意力、工作記憶和情緒處理相關。 |
-| **Alpha (α)** | 8 – 13 Hz | 清醒、放鬆、閉眼狀態 | **中間波**。通常代表大腦處於非專注、休息的狀態。在運動皮層區域，此頻段的波也稱為 **Mu (μ) 波**，與運動意圖直接相關。 |
-| **Beta (β)** | 13 – 30 Hz | 清醒、主動思考、專注、焦慮 | **快波**。與運動執行、邏輯思考和積極的認知活動高度相關。 |
-| **Gamma (γ)** | > 30 Hz | 高強度認知處理、跨區域資訊整合 | **最快波**。與複雜的感知任務和高階認知功能相關。 |
+| **Delta (δ)** | 0.5 – 4 Hz | Deep sleep, infant sleep, certain brain disorders | **Lowest frequency**. Typically represents an unconscious or deep resting state. |
+| **Theta (θ)** | 4 – 8 Hz | Light sleep, deep relaxation, meditation, memory, and navigation | **Slow wave**. Associated with attention, working memory, and emotional processing. |
+| **Alpha (α)** | 8 – 13 Hz | Awake, relaxed, eyes-closed state | **Intermediate wave**. Often represents a non-focused, resting state of the brain. In motor cortex areas, waves in this band are also known as **Mu (μ) waves** and are directly related to motor intention. |
+| **Beta (β)** | 13 – 30 Hz | Awake, active thinking, concentration, anxiety | **Fast wave**. Highly correlated with motor execution, logical thinking, and active cognitive engagement. |
+| **Gamma (γ)** | > 30 Hz | High-intensity cognitive processing, cross-regional information integration | **Fastest wave**. Associated with complex perceptual tasks and higher-order cognitive functions. |

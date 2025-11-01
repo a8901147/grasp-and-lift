@@ -2,51 +2,51 @@
 
 **1. Research Question**
 
-*   **核心問題**: `exp1-B` 中使用的 Filter Bank 預設頻率組合 (`[0.5, 1, 2, 3, 4, 5, 7, 9, 15, 30] Hz`) 是否為最佳參數？本實驗旨在探討，能否透過系統性的超參數搜索，為每一個獨立的 `(個體, 通道)` 組合找到一組專屬的最佳截止頻率，從而進一步提升 `HandStart` 事件的預測性能。
-*   **假設**: 我們假設預設參數是一個「通用解」，但並非針對每個通道的最佳解。透過對每個通道進行獨立的頻率優化，可以找到更能捕捉其獨特訊號特性的頻率組合，從而獲得比 `exp1-B` 更高的 AUC 分數。
+*   **Core Question**: Is the default frequency combination (`[0.5, 1, 2, 3, 4, 5, 7, 9, 15, 30] Hz`) used in the Filter Bank in `exp1-B` optimal? This experiment aims to investigate whether a systematic hyperparameter search can find a unique set of optimal cutoff frequencies for each independent `(subject, channel)` combination, thereby further improving the prediction performance for the `HandStart` event.
+*   **Hypothesis**: We hypothesize that the default parameters are a "general solution" but not the optimal solution for every channel. By performing independent frequency optimization for each channel, we can find frequency combinations that better capture its unique signal characteristics, leading to higher AUC scores than `exp1-B`.
 
 **2. Methodology**
 
 *   **Model:**
-    *   與 `exp1-B` 保持一致，使用包含 `StandardScaler` 和 `LogisticRegression` 的 `Pipeline` 作為評估模型。
+    *   Consistent with `exp1-B`, using a `Pipeline` containing `StandardScaler` and `LogisticRegression` as the evaluation model.
 
 *   **Features:**
-    *   與 `exp1-B` 相同，使用 `FilterBank` 特徵提取器。但其截止頻率不再是固定的預設值，而是由貝葉斯優化器在預定義的搜索空間內動態推薦的參數組合。
+    *   Same as `exp1-B`, using the `FilterBank` feature extractor. However, its cutoff frequencies are no longer fixed default values but are dynamically recommended parameter combinations by the Bayesian optimizer within a predefined search space.
 
 *   **Procedure:**
-    1.  **對象**: 以 `Subject 1` 的所有 32 個通道作為試點，針對 `HandStart` 事件。
-    2.  **優化方法**: 採用**貝葉斯優化 (Bayesian Optimization)** (`scikit-optimize` 函式庫) 來高效地搜索 10 個截止頻率的最佳組合。
-    3.  **搜索空間**: 為 10 個截止頻率分別定義了連續且不重疊的搜索區間 (例如 `freq_1`: `[0.1, 1.0]` Hz, `freq_2`: `[1.0, 3.0]` Hz, ... , `freq_10`: `[38.0, 45.0]` Hz)，以確保頻率的有序性。
-    4.  **目標函數**: 對於每一個通道，優化器的目標是最大化在驗證集 (`series 7-8`) 上的 AUC 分數。每次迭代都會使用一組新的頻率參數來訓練和評估模型。
-    5.  **執行**: 為 `Subject 1` 的每個通道獨立運行 50 次優化迭代，找到各自的最佳頻率組合。
+    1.  **Scope**: All 32 channels of `Subject 1` were used as a pilot, targeting the `HandStart` event.
+    2.  **Optimization Method**: **Bayesian Optimization** (using the `scikit-optimize` library) was employed to efficiently search for the optimal combination of 10 cutoff frequencies.
+    3.  **Search Space**: For the 10 cutoff frequencies, consecutive and non-overlapping search intervals were defined (e.g., `freq_1`: `[0.1, 1.0]` Hz, `freq_2`: `[1.0, 3.0]` Hz, ..., `freq_10`: `[38.0, 45.0]` Hz) to ensure frequency order.
+    4.  **Objective Function**: For each channel, the optimizer's objective was to maximize the AUC score on the validation set (`series 7-8`). Each iteration used a new set of frequency parameters to train and evaluate the model.
+    5.  **Execution**: 50 optimization iterations were run independently for each channel of `Subject 1` to find their respective optimal frequency combinations.
 
 **3. Key Findings & Analysis**
 
-*   **整體性能顯著提升**: 頻率優化策略取得了全面成功。與 `exp1-B` 的預設參數相比，對 `Subject 1` 的 28 個有效通道進行優化後：
-    *   **平均絕對 AUC 提升**: **+0.0442**
-    *   **平均百分比 AUC 提升**: **+7.21%**
-    *   這強烈證明了為每個通道尋找專屬頻率組合的有效性。
+*   **Significant Overall Performance Improvement**: The frequency optimization strategy achieved comprehensive success. Compared to the default parameters in `exp1-B`, after optimizing the 28 effective channels for `Subject 1`:
+    *   **Average Absolute AUC Increase**: **+0.0442**
+    *   **Average Percentage AUC Increase**: **+7.21%**
+    *   This strongly demonstrates the effectiveness of finding dedicated frequency combinations for each channel.
 
-*   **高潛力通道的巨大提升**: 優化對於那些在 `exp1-B` 中表現平平、但蘊含潛力的通道，帶來了最顯著的改善。
-    *   **Channel `F4`**: AUC 從 `0.5303` 飆升至 `0.7073`，絕對提升 **+0.1770** (提升 **33.4%**)，從一個幾乎無效的通道變成了優質通道。
-    *   **Channel `F3`**: AUC 從 `0.6212` 提升至 `0.7563`，絕對提升 **+0.1351** (提升 **21.7%**)。
-    *   **Channel `FC5`**: AUC 從 `0.6113` 提升至 `0.7295`，絕對提升 **+0.1182** (提升 **19.3%**)。
-    *   這些結果表明，預設頻率組合可能完全錯失了這些特定腦區訊號的「黃金頻帶」。
+*   **Massive Gains on High-Potential Channels**: Optimization brought the most significant improvements for channels that performed moderately in `exp1-B` but held potential.
+    *   **Channel `F4`**: AUC soared from `0.5303` to `0.7073`, an absolute increase of **+0.1770** (a **33.4%** increase), transforming it from an almost ineffective channel into a high-quality one.
+    *   **Channel `F3`**: AUC increased from `0.6212` to `0.7563`, an absolute increase of **+0.1351** (a **21.7%** increase).
+    *   **Channel `FC5`**: AUC increased from `0.6113` to `0.7295`, an absolute increase of **+0.1182** (a **19.3%** increase).
+    *   These results indicate that the default frequency combination might have completely missed the "golden frequency bands" of these specific brain region signals.
 
-*   **最佳頻率組合的洞見**:
-    *   分析 `F4` 通道的最佳頻率組合 `[0.17, 2.87, 4.29, 5.06, 7.27, 12.43, 16.73, 25.09, 28.19, 44.67]` Hz，我們發現它與預設組合有顯著不同：它不僅探索了更低的起始頻率 (0.17 vs 0.5)，也將頻率範圍擴展到了更高的頻段 (44.67 vs 30)。
-    *   這暗示了與 `HandStart` 事件相關的預測性資訊，其頻譜分佈比預設參數所假設的更為寬廣和複雜。不同腦區（通道）的訊號特性確實存在差異。
+*   **Insights into Optimal Frequency Combinations**:
+    *   Analyzing the optimal frequency combination for channel `F4` (`[0.17, 2.87, 4.29, 5.06, 7.27, 12.43, 16.73, 25.09, 28.19, 44.67]` Hz), we found it significantly different from the default combination: it not only explored lower starting frequencies (0.17 vs 0.5) but also extended the frequency range to higher bands (44.67 vs 30).
+    *   This suggests that the predictive information related to the `HandStart` event has a broader and more complex spectral distribution than assumed by the default parameters. Signal characteristics indeed differ across different brain regions (channels).
 
 **4. Conclusion & Next Steps**
 
-*   **結論**: `exp1-C` 成功地回答了研究問題。實驗證明，透過貝葉斯優化為每個通道尋找專屬的 Filter Bank 截止頻率，是一種非常有效的性能提升策略。它不僅顯著提高了模型的平均預測能力，更重要的是，它揭示了不同通道（腦區）在預測同一事件時，其訊號的頻域特性存在差異，證實了**個體化特徵工程 (Subject-Specific & Channel-Specific Feature Engineering)** 的必要性。
+*   **Conclusion**: `exp1-C` successfully answered the research question. The experiment demonstrated that finding dedicated Filter Bank cutoff frequencies for each channel through Bayesian optimization is a very effective performance improvement strategy. It not only significantly increased the model's average predictive capability but, more importantly, revealed that different channels (brain regions) exhibit different frequency-domain characteristics when predicting the same event, confirming the necessity of **Individualized Feature Engineering (Subject-Specific & Channel-Specific Feature Engineering)**.
 
 *   **Next Steps**:
-    1.  **擴展應用**: 將此自動化優化流程應用到**所有 12 位受試者**的**所有 6 個事件**上，為每個 `(個體, 通道, 事件)` 組合建立一個使用其專屬最佳頻率的模型。這將是進入多通道模型（第三階段）之前，最大化單通道模型性能的關鍵一步。
-    2.  **建立「最佳單通道模型庫」**: 執行完上述步驟後，我們將得到一個包含 `12 * 32 * 6 = 2304` 個最佳化模型的庫。這個庫將成為後續所有進階模型（如模型融合、多通道模型）的堅實基礎。
-    3.  **探索更優的頻率搜索空間 (Advanced Frequency Search Space)**:
-        *   **當前搜索空間的合理性**: 目前的 10 個截止頻率搜索範圍 (`[0.1, 1.0]` Hz 到 `[38.0, 45.0]` Hz) 是基於神經科學的先驗知識（涵蓋主要腦波頻帶）和優化器結構（確保頻率順序）所設計的。它在低頻區域進行了較精細的劃分，並涵蓋了從 Delta 到 Low Gamma 的主要頻段。
-        *   **調整建議**: 鑑於優化結果的顯著提升，未來可以考慮以下調整策略，以進一步探索更優的頻率組合：
-            *   **聚焦「黃金頻段」**: 根據 `HandStart` 事件的優化結果，將搜索範圍縮小到對運動意圖最敏感的低頻區域（例如 0.1-30 Hz），並在其中增加頻率區間的密度，讓優化器在 Delta、Theta 和 Alpha 頻帶有更高的自由度，以期找到更精細的最佳解。
-            *   **探索更高頻率**: 針對其他事件（如 `FirstDigitTouch`, `LiftOff`），考慮將搜索上限擴展到 60 Hz 甚至 80 Hz，以探索更高頻的 Gamma 波活動是否包含更多預測性資訊。
-            *   **從「低通」到「帶通」的轉變**: 考慮將 Filter Bank 的設計從一系列重疊的低通濾波器，轉變為搜索一系列獨立的**帶通濾波器**的上下邊界。這將減少特徵冗餘，並可能產生更具解釋性的結果，例如直接識別出對特定事件最重要的「黃金頻帶」。
+    1.  **Extended Application**: Apply this automated optimization process to **all 6 events** for **all 12 subjects**, creating a model for each `(subject, channel, event)` combination using its dedicated optimal frequencies. This will be a crucial step to maximize single-channel model performance before moving to multi-channel models (Phase 3).
+    2.  **Establish a "Best Single-Channel Model Library"**: After completing the above steps, we will have a library containing `12 * 32 * 6 = 2304` optimized models. This library will serve as a solid foundation for all subsequent advanced models (e.g., model ensembling, multi-channel models).
+    3.  **Explore More Optimal Frequency Search Spaces (Advanced Frequency Search Space)**:
+        *   **Rationality of Current Search Space**: The current 10 cutoff frequency search ranges (`[0.1, 1.0]` Hz to `[38.0, 45.0]` Hz) are designed based on neuroscientific prior knowledge (covering major brainwave bands) and optimizer structure (ensuring frequency order). It provides a finer division in the low-frequency region and covers major bands from Delta to Low Gamma.
+        *   **Adjustment Suggestions**: Given the significant performance improvement from optimization, future adjustments could consider the following strategies to further explore more optimal frequency combinations:
+            *   **Focus on "Golden Frequency Bands"**: Based on the optimization results for the `HandStart` event, narrow the search range to the low-frequency regions most sensitive to motor intention (e.g., 0.1-30 Hz) and increase the density of frequency intervals within it, giving the optimizer more degrees of freedom in the Delta, Theta, and Alpha bands, hoping to find a more refined optimal solution.
+            *   **Explore Higher Frequencies**: For other events (e.g., `FirstDigitTouch`, `LiftOff`), consider extending the search upper limit to 60 Hz or even 80 Hz to explore whether higher-frequency Gamma wave activity contains more predictive information.
+            *   **Shift from "Low-pass" to "Band-pass"**: Consider changing the Filter Bank design from a series of overlapping low-pass filters to searching for the upper and lower bounds of a series of independent **band-pass filters**. This will reduce feature redundancy and may yield more interpretable results, such as directly identifying the "golden frequency bands" most important for specific events.

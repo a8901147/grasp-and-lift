@@ -1,32 +1,32 @@
-# 專案概述與評估標準
+# Project Overview and Evaluation Criteria
 
-## 1. 專案目標
+## 1. Project Goal
 
-想像一下，如果沒有雙手，我們將如何完成早晨起床、穿衣、刷牙、泡咖啡等一系列日常活動。對於因截肢或神經系統疾病而失去手部功能的患者來說，這就是他們每天面臨的現實。
+Imagine how we would accomplish a series of daily activities like waking up, dressing, brushing teeth, and making coffee without hands. For patients who have lost hand function due to amputation or neurological diseases, this is their daily reality.
 
-本專案的最終目標是推動**腦機介面 (Brain-Computer Interface, BCI)** 技術的發展，以開發出能夠讓患者透過大腦活動直接控制的義肢設備。這將極大地提升他們的獨立生活能力與生活品質。
+The ultimate goal of this project is to advance **Brain-Computer Interface (BCI)** technology to develop prosthetic devices that patients can control directly through brain activity. This will greatly enhance their independent living capabilities and quality of life.
 
-## 2. 挑戰任務
+## 2. Challenge Task
 
-EEG (腦電圖) 信號是頭皮上記錄到的大腦活動電信號，但其與大腦活動之間的關係非常複雜。本次競賽的核心挑戰是：
+EEG (Electroencephalography) signals are electrical signals of brain activity recorded from the scalp, but their relationship with brain activity is very complex. The core challenge of this competition is:
 
-> **利用健康受試者在執行「抓取、提起、放回」物體等一系列動作時所記錄的 EEG 數據，準確識別出其手部正處於哪個特定事件階段。**
+> **Using EEG data recorded from healthy subjects performing a series of actions such as "grasping, lifting, and replacing" an object, accurately identify which specific event phase their hand is in.**
 
-透過更好地理解 EEG 信號與手部運動之間的關係，我們才能為開發出更可靠、低風險且非侵入性的 BCI 設備奠定基礎。
+By better understanding the relationship between EEG signals and hand movements, we can lay the foundation for developing more reliable, low-risk, and non-invasive BCI devices.
 
-## 3. 評估指標 (Evaluation Metric)
+## 3. Evaluation Metric
 
-提交結果將使用 **平均欄位 AUC (Mean Column-wise AUC)** 進行評估。
+Submission results will be evaluated using **Mean Column-wise AUC (Area Under the ROC Curve)**.
 
-具體來說，評估系統會計算您預測的**每一個事件欄位**（如 `HandStart`, `FirstDigitTouch` 等）各自的 ROC 曲線下面積 (Area Under the ROC Curve)，然後將所有欄位的 AUC 分數取平均值。
+Specifically, the evaluation system will calculate the AUC for **each event column** (e.g., `HandStart`, `FirstDigitTouch`, etc.) independently, and then average all AUC scores.
 
-由於預測涵蓋多位受試者和多個系列，您提交的機率值應該經過校準，以確保它們在一個統一的尺度上。
+Since predictions cover multiple subjects and series, your submitted probability values should be calibrated to ensure they are on a unified scale.
 
-## 4. 提交檔案格式 (Submission File Format)
+## 4. Submission File Format
 
-您必須為測試集中的每一個 `id`（對應一個時間幀）預測六個事件的發生機率。`id` 由 `subject_series_frame` 拼接而成。
+You must predict the probability of occurrence for six events for each `id` (corresponding to a time frame) in the test set. The `id` is concatenated as `subject_series_frame`.
 
-提交的 `.csv` 檔案必須包含一個標頭，並遵循以下格式：
+The submitted `.csv` file must include a header and follow this format:
 
 ```csv
 id,HandStart,FirstDigitTouch,BothStartLoadPhase,LiftOff,Replace,BothReleased
@@ -36,6 +36,6 @@ subj1_series9_2,0,0,0,0,0,0
 ...
 ```
 
-## 5. 致謝 (Acknowledgements)
+## 5. Acknowledgements
 
-本次競賽由 **WAY Consortium** (Wearable interfaces for hAnd function recoverY; FP7-ICT-288551) 贊助。
+This competition is sponsored by the **WAY Consortium** (Wearable interfaces for hAnd function recoverY; FP7-ICT-288551).

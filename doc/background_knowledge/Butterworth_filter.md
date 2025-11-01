@@ -1,37 +1,37 @@
-# 巴特沃斯濾波器於腦電圖（EEG）訊號處理之應用
+# Application of Butterworth Filters in EEG Signal Processing
 
-在腦電圖（EEG）等時間序列數據的分析中，選擇合適的濾波器至關重要。專案的原始設計者選擇了**巴特沃斯（Butterworth）濾波器**，這並非因為它是唯一的選擇，而是因為它在各項性能指標間取得了最佳的平衡。
+In the analysis of time-series data like Electroencephalography (EEG), selecting the right filter is crucial. The project's original designers chose the **Butterworth filter**, not because it is the only option, but because it strikes an optimal balance among various performance metrics.
 
-## 為什麼選擇巴特沃斯濾波器？
+## Why Choose the Butterworth Filter?
 
-巴特沃斯濾波器在 EEG 訊號處理中備受青睞，主要有以下幾個原因：
+The Butterworth filter is favored in EEG signal processing for several key reasons:
 
-- **最大平坦度（Maximal Flatness）**: EEG 分析常聚焦於功率譜密度（Power Spectral Density, PSD）。巴特沃斯濾波器能在通帶（passband）內最大程度地保持訊號的振幅完整性，優於其他標準的無限脈衝響應（IIR）濾波器，從而將振幅失真降至最低。
+- **Maximal Flatness**: EEG analysis often focuses on Power Spectral Density (PSD). The Butterworth filter maximally preserves the signal's amplitude integrity within the passband, outperforming other standard Infinite Impulse Response (IIR) filters and thus minimizing amplitude distortion.
 
-- **最小振鈴效應（Minimal Ringing）**: 巴特沃斯濾波器擁有最平滑的階躍響應（step response），這意味著它在時域（time-domain）上引入的非期望振盪（即「振鈴效應」）最少。這對於分析大腦中的瞬態事件（transient brain events）至關重要。
+- **Minimal Ringing**: The Butterworth filter has the smoothest step response, meaning it introduces the fewest unwanted oscillations (i.e., "ringing effects") in the time domain. This is critical for analyzing transient brain events.
 
-在如「Grasp-and-Lift」這樣的 EEG 機器學習競賽中，巴特沃斯濾波器因其極小的振幅與相位失真，成為一種可靠的特徵提取方法，能有效避免產生不必要的假影（artifacts）。
+In EEG machine learning competitions like "Grasp-and-Lift," the Butterworth filter is a reliable feature extraction method due to its minimal amplitude and phase distortion, effectively avoiding the creation of unnecessary artifacts.
 
-## 巴特沃斯濾波器的替代方案
+## Alternatives to the Butterworth Filter
 
-當然，您完全可以根據需求更換濾波器類型。以下是一些常見的替代方案及其適用場景：
+Of course, you can change the filter type based on your needs. Here are some common alternatives and their typical use cases:
 
-| 濾波器替代方案 | 程式碼範例（Python - SciPy） | 適用時機 |
+| Filter Alternative | Code Example (Python - SciPy) | When to Use |
 | :--- | :--- | :--- |
-| **切比雪夫 I 型 (Chebyshev I)** | `b, a = cheby1(order, rp, Wn, btype='lowpass')` | 當您需要更陡峭的滾降（roll-off），但能接受通帶內微小的振幅漣波（ripple）。 |
-| **橢圓濾波器 (Elliptic / Cauer)** | `b, a = ellip(order, rp, rs, Wn, btype='lowpass')` | 當您需要在給定階數下獲得最陡峭的滾降，並能同時接受通帶與阻帶（stopband）的漣波。 |
-| **有限脈衝響應濾波器 (FIR Filter)** | `b = firwin(numtaps, cutoff, fs=self.sfreq)` | 當您最重視的是完美的線性相位（即無時間延遲），但願意犧牲一些計算效率。 |
+| **Chebyshev I** | `b, a = cheby1(order, rp, Wn, btype='lowpass')` | When you need a steeper roll-off and can tolerate small amplitude ripples in the passband. |
+| **Elliptic / Cauer** | `b, a = ellip(order, rp, rs, Wn, btype='lowpass')` | When you need the steepest possible roll-off for a given order and can accept ripples in both the passband and stopband. |
+| **FIR Filter** | `b = firwin(numtaps, cutoff, fs=self.sfreq)` | When your top priority is a perfectly linear phase (i.e., no time delay), and you are willing to sacrifice some computational efficiency. |
 
-## 理想與現實：「磚牆濾波器」的限制
+## The Ideal vs. Reality: Limitations of the "Brick-Wall Filter"
 
-理想中的濾波器，常被稱為「磚牆濾波器」（Brick-Wall Filter），它應該能在特定頻率下實現完美的訊號通過/阻斷（即 1/0 響應）。然而，這種濾波器在現實中無法實現，其主要限制來自於**因果律（Causality）**。
+The ideal filter, often called a "Brick-Wall Filter," would perfectly pass or block signals at a specific frequency (a 1/0 response). However, this type of filter is impossible to realize in practice, primarily due to the constraints of **Causality**.
 
-### 因果律的數學約束
+### The Mathematical Constraint of Causality
 
-因果律是任何真實世界處理系統都必須遵守的數學要求。
+Causality is a mathematical requirement that any real-world processing system must obey.
 
-1.  **數學上的限制**: 一個擁有完美垂直截止頻率的濾波器，其脈衝響應（impulse response）在時域上是無限長且非因果（non-causal）的。
+1.  **Mathematical Limitation**: A filter with a perfectly vertical frequency cutoff would have an impulse response that is infinitely long and non-causal in the time domain.
 
-2.  **物理上的不可能**: 「非因果」意味著濾波器的輸出必須在輸入訊號到達**之前**就開始。無論是使用類比電路（硬體）還是 Python 程式碼（軟體），這在物理上都是不可能實現的。
+2.  **Physical Impossibility**: "Non-causal" means the filter's output would have to begin **before** the input signal arrives. This is physically impossible to achieve, whether using analog circuits (hardware) or Python code (software).
 
-總結來說，導致「磚牆濾波器」無法實現的根本原因是一個基本的**數學約束**，而非單純的硬體限制。這個約束同樣適用於在軟體中運行的數位濾波器。
+In summary, the fundamental reason a "Brick-Wall Filter" cannot be realized is a basic **mathematical constraint**, not merely a hardware limitation. This constraint applies equally to digital filters running in software.

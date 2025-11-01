@@ -1,60 +1,60 @@
-# EEG 特徵工程：從時域到空域
+# EEG Feature Engineering: From Time Domain to Spatial Domain
 
-腦電圖 (EEG) 信號本質上是複雜的時間序列數據。為了讓機器學習模型能夠有效地從中學習，我們需要將原始的電壓波動轉換為有意義的、量化的指標——這就是**特徵工程**。
+EEG signals are inherently complex time-series data. To enable machine learning models to learn effectively from them, we need to transform the raw voltage fluctuations into meaningful, quantitative metrics—this is **feature engineering**.
 
-EEG 特徵可以從不同的維度進行提取，主要分為以下四類：
+EEG features can be extracted from different dimensions, primarily categorized into the following four types:
 
-1.  **時域 (Time Domain)**: 直接分析信號的波形和振幅。
-2.  **頻域 (Frequency Domain)**: 分析信號中不同腦波頻率的組成成分。
-3.  **時頻域 (Time-Frequency Domain)**: 結合時間與頻率，分析特定頻率何時出現。
-4.  **空域 (Spatial Domain)**: 分析多個電極（通道）之間的空間關係。
-
----
-
-## 1. 時域特徵 (Time Domain Features)
-
-這些特徵直接描述信號隨時間變化的振幅與形狀，計算速度快且直觀。
-
--   **均方根 (Root Mean Square, RMS)**: 量化信號活躍程度或能量的指標，是信號總能量的簡單估計。RMS 越大，代表腦波起伏越大。
--   **標準差 (Standard Deviation, SD)**: 描述信號振幅圍繞平均值的離散程度，與 RMS 類似，也反映了信號的能量。
--   **峰值 (Peak) / 谷值 (Trough)**: 信號在一個時間窗內的最大和最小振幅。在事件相關電位 (ERP) 分析中尤其重要。
--   **過零率 (Zero Crossing Rate, ZCR)**: 在一個時間窗內，信號波形穿過零軸（基線）的次數。ZCR 越高，通常表示信號的主導頻率越高。
-
-**優點**: 計算簡單、速度快、易於理解。
-**局限**: 無法有效捕捉 EEG 中最關鍵的頻率資訊（如 Alpha/Beta 波），而這些資訊是區分大腦狀態的關鍵。
+1.  **Time Domain**: Directly analyzing the signal's waveform and amplitude.
+2.  **Frequency Domain**: Analyzing the composition of different brainwave frequencies within the signal.
+3.  **Time-Frequency Domain**: Combining time and frequency to analyze when specific frequencies occur.
+4.  **Spatial Domain**: Analyzing the spatial relationships between multiple electrodes (channels).
 
 ---
 
-## 2. 頻域特徵 (Frequency Domain Features)
+## 1. Time Domain Features
 
-頻域分析是 EEG 特徵提取的**核心**，它衡量信號的功率（Power）如何分佈在不同的頻率上。
+These features directly describe the signal's amplitude and shape over time. They are computationally fast and intuitive.
 
--   **傅立葉變換 (FFT)**: 將信號從時域轉換到頻域的基礎工具，輸出不同頻率對應的振幅和相位。
--   **功率譜密度 (Power Spectral Density, PSD)**: 衡量信號功率在頻率上的分佈。PSD 圖上的高峰代表大腦在該頻率上的活躍度更強。
+-   **Root Mean Square (RMS)**: A measure of the signal's activity level or energy; a simple estimate of the total signal power. A higher RMS indicates greater brainwave fluctuation.
+-   **Standard Deviation (SD)**: Describes the dispersion of the signal's amplitude around its mean. Similar to RMS, it also reflects the signal's energy.
+-   **Peak / Trough**: The maximum and minimum amplitude of the signal within a time window. Particularly important in Event-Related Potential (ERP) analysis.
+-   **Zero Crossing Rate (ZCR)**: The number of times the signal waveform crosses the zero axis (baseline) within a time window. A higher ZCR often indicates a higher dominant frequency in the signal.
 
-從 PSD 中，我們可以提取兩種關鍵特徵：
-
--   **絕對功率 (Absolute Power)**: 計算某一頻帶（例如 Alpha 波, 8-13 Hz）內的功率總和。它反映了該頻帶的總能量，但易受個體生理差異影響。
--   **相對功率 (Relative Power)**: 計算某一頻帶的功率佔總功率的**比例**。這是一個更穩健的特徵，能有效消除個體差異和設備增益的影響，在腦機介面應用中更為常用。
-
----
-
-## 3. 時頻域特徵 (Time-Frequency Domain Features)
-
-FFT 的一個缺點是它丟失了所有時間資訊。時頻分析則旨在回答「**什麼頻率在什麼時間點出現？**」，這對於分析短暫、突發的腦活動至關重要。
-
--   **短時傅立葉變換 (Short-Time Fourier Transform, STFT)**: 將長信號切成多個短的時間窗，並對每個小窗單獨進行 FFT。結果是一張「時頻圖 (Spectrogram)」，展示了頻率隨時間的變化。
--   **小波變換 (Wavelet Transform, WT)**: 一種更先進的技術，它使用不同尺度的「小波」來分析信號。它能用窄窗精確捕捉高頻的瞬時變化，同時用寬窗觀察低頻的長期趨勢，非常適合分析複雜的 EEG 信號。
-
-從時頻分析中，可以提取**事件相關同步/去同步化 (ERS/ERD)** 等特徵，它測量事件發生後，特定頻帶功率隨時間的增強 (ERS) 或減弱 (ERD)。
+**Advantages**: Simple to compute, fast, and easy to understand.
+**Limitations**: Cannot effectively capture the most critical frequency information in EEG (like Alpha/Beta waves), which is key to distinguishing between different brain states.
 
 ---
 
-## 4. 空域特徵 (Spatial Domain Features)
+## 2. Frequency Domain Features
 
-當擁有多個電極時，我們可以分析不同大腦區域之間的協同活動。
+Frequency-domain analysis is the **core** of EEG feature extraction. It measures how the signal's power is distributed across different frequencies.
 
--   **共空間模式 (Common Spatial Pattern, CSP)**:
-    -   **目標**: CSP 是一種強大的**有監督**空間濾波器，旨在找到一組最佳的線性投影，使得兩類不同腦活動（例如「想像左手運動」 vs 「想像右手運動」）的方差差異達到最大化。
-    -   **原理**: 它學習如何組合多個通道的信號，以放大特定任務相關的腦活動模式，同時抑制無關的噪聲。
-    -   **應用**: 在運動想像 (Motor Imagery) 腦機介面中，CSP 是提取 ERD/ERS 現象最有效、最經典的特徵提取方法之一。其輸出通常是對數方差特徵，可直接用於分類。
+-   **Fast Fourier Transform (FFT)**: The fundamental tool for converting a signal from the time domain to the frequency domain, outputting the amplitude and phase for different frequencies.
+-   **Power Spectral Density (PSD)**: Measures the distribution of signal power over frequency. Peaks on a PSD plot represent stronger brain activity at those frequencies.
+
+From the PSD, we can extract two key types of features:
+
+-   **Absolute Power**: The sum of power within a specific frequency band (e.g., Alpha waves, 8-13 Hz). It reflects the total energy of that band but is susceptible to individual physiological differences.
+-   **Relative Power**: The **proportion** of power in a specific band relative to the total power. This is a more robust feature that effectively normalizes for individual differences and equipment gain, making it more commonly used in Brain-Computer Interface (BCI) applications.
+
+---
+
+## 3. Time-Frequency Domain Features
+
+A drawback of FFT is that it loses all temporal information. Time-frequency analysis aims to answer the question, "**Which frequency appears at which point in time?**" This is crucial for analyzing transient, burst-like brain activity.
+
+-   **Short-Time Fourier Transform (STFT)**: Slices a long signal into multiple short time windows and performs an FFT on each window individually. The result is a "spectrogram," which shows how frequencies change over time.
+-   **Wavelet Transform (WT)**: A more advanced technique that uses "wavelets" of different scales to analyze the signal. It can use narrow windows to precisely capture high-frequency transient changes while using wide windows to observe long-term low-frequency trends, making it highly suitable for analyzing complex EEG signals.
+
+From time-frequency analysis, features like **Event-Related Synchronization/Desynchronization (ERS/ERD)** can be extracted. This measures the increase (ERS) or decrease (ERD) in power over time in a specific frequency band following an event.
+
+---
+
+## 4. Spatial Domain Features
+
+When multiple electrodes are available, we can analyze the coordinated activity between different brain regions.
+
+-   **Common Spatial Pattern (CSP)**:
+    -   **Objective**: CSP is a powerful **supervised** spatial filtering technique designed to find an optimal set of linear projections that maximizes the variance difference between two classes of brain activity (e.g., "imagine left-hand movement" vs. "imagine right-hand movement").
+    -   **Principle**: It learns how to combine signals from multiple channels to amplify task-related brain activity patterns while suppressing irrelevant noise.
+    -   **Application**: In motor imagery BCIs, CSP is one of the most effective and classic methods for extracting features related to the ERD/ERS phenomenon. Its output is typically log-variance features, which can be directly used for classification.

@@ -1,55 +1,55 @@
-# 技術背景：Filter Bank 特徵工程分析
+# Technical Background: Filter Bank Feature Engineering Analysis
 
-## 1. 什麼是 Filter Bank (濾波器組)？
+## 1. What is a Filter Bank?
 
-Filter Bank 是一種在信號處理中廣泛應用的特徵工程技術，尤其在腦機接口 (BCI) 領域被證明非常有效。其核心思想是將一個原始的、寬頻帶的信號（如 EEG）分解成多個不同頻帶的子信號，然後將這些子信號作為新的特徵集提供給機器學習模型。
+A Filter Bank is a feature engineering technique widely used in signal processing and has proven to be highly effective, especially in the Brain-Computer Interface (BCI) field. The core idea is to decompose an original, wide-band signal (like EEG) into multiple sub-signals in different frequency bands. These sub-signals are then provided as a new feature set to a machine learning model.
 
-在我們的專案中，我們使用了一組**低通濾波器 (Low-pass Filters)** 來實現這一點。原始的單通道信號（1個特徵）被複製了數份，每一份都通過一個具有不同截止頻率（例如 1Hz, 2Hz, 4Hz...）的低通濾波器。最終，這些濾波後的信號被拼接在一起，形成了一個更豐富的特徵集。
+In our project, we implement this using a set of **Low-pass Filters**. The original single-channel signal (1 feature) is duplicated several times, and each copy is passed through a low-pass filter with a different cutoff frequency (e.g., 1Hz, 2Hz, 4Hz...). Finally, these filtered signals are concatenated to form a richer feature set.
 
-這種方法巧妙地讓一個簡單的線性模型（如邏輯回歸）也能夠獨立地評估不同頻帶的信息，並為那些對預測目標貢獻更大的頻帶分配更高的學習權重。
+This method cleverly allows a simple linear model (like Logistic Regression) to independently evaluate information from different frequency bands and assign higher learning weights to those bands that contribute more to the prediction target.
 
-## 2. Filter Bank 的優點與權衡 (Trade-offs)
+## 2. Advantages and Trade-offs of a Filter Bank
 
-### 優點 (Pros)
+### Pros
 
-1.  **顯著提升信噪比 (Signal-to-Noise Ratio)**:
-    *   EEG 信號中通常混雜著大量與任務無關的噪聲。通過一系列低通濾波器，我們可以有效地隔離出與運動意圖相關的低頻腦電波（如 Mu 和 Beta 節律），從而讓模型更容易學習到有效模式。這是它能大幅提升 AUC 分數的最主要原因。
+1.  **Significantly Improves Signal-to-Noise Ratio (SNR)**:
+    *   EEG signals are often contaminated with a large amount of task-irrelevant noise. By using a series of low-pass filters, we can effectively isolate the low-frequency brainwaves related to motor intention (such as Mu and Beta rhythms), making it easier for the model to learn effective patterns. This is the primary reason for its substantial improvement in AUC scores.
 
-2.  **特徵增強與信息分解**:
-    *   將單一的時序信號分解為多個頻帶的表示，極大地豐富了特徵空間。模型不再是面對一團混雜的信息，而是可以清晰地看到「0-4Hz 頻帶發生了什麼」、「4-8Hz 頻帶發生了什麼」，從而實現了信息的解耦和精細化分析。
+2.  **Feature Enhancement and Information Decomposition**:
+    *   Decomposing a single time-series signal into representations across multiple frequency bands greatly enriches the feature space. Instead of facing a jumble of mixed information, the model can clearly see "what's happening in the 0-4Hz band," "what's happening in the 4-8Hz band," etc., achieving information decoupling and fine-grained analysis.
 
-3.  **計算效率高**:
-    *   相比於複雜的時頻分析方法（如 STFT 或 CWT），Filter Bank 的實現（通常基於 IIR 濾波器如 Butterworth）計算成本非常低，適合處理大規模數據集或應用於實時系統。
+3.  **High Computational Efficiency**:
+    *   Compared to complex time-frequency analysis methods (like STFT or CWT), the implementation of a Filter Bank (typically based on IIR filters like Butterworth) is computationally very cheap, making it suitable for processing large datasets or for real-time applications.
 
-4.  **模型兼容性好**:
-    *   它產生的特徵可以直接輸入到任何標準的機器學習模型中（如邏輯回歸、SVM、梯度提升樹等），是一種即插即用的特徵增強模塊。
+4.  **Good Model Compatibility**:
+    *   The features it generates can be directly fed into any standard machine learning model (e.g., Logistic Regression, SVM, Gradient Boosting Trees), serving as a plug-and-play feature enhancement module.
 
-### 缺點與權衡 (Cons)
+### Cons
 
-1.  **頻率分辨率有限**:
-    *   Filter Bank 提供的是對頻帶的「粗略」觀察。它無法像傅立葉變換那樣提供精確的頻譜信息。
+1.  **Limited Frequency Resolution**:
+    *   A Filter Bank provides a "coarse" view of frequency bands. It cannot provide the precise spectral information that a Fourier Transform can.
 
-2.  **時間分辨率的損失**:
-    *   任何濾波過程都會在時間維度上產生一定的「模糊」或「延遲」效應（即相位失真）。
+2.  **Loss of Time Resolution**:
+    *   Any filtering process introduces a certain amount of "blurring" or "delay" in the time dimension (i.e., phase distortion).
 
-3.  **參數選擇的依賴性**:
-    *   效果高度依賴於**截止頻率**的選擇。如果選擇的頻帶與任務完全不相關，反而可能引入無用信息，干擾模型學習。
+3.  **Dependency on Parameter Selection**:
+    *   The effectiveness is highly dependent on the choice of **cutoff frequencies**. If the selected bands are completely irrelevant to the task, it might introduce useless information and interfere with the model's learning.
 
-4.  **特徵維度增加**:
-    *   它會增加特徵維度，如果原始特徵維度已經很高，可能會增加模型的訓練時間和過擬合的風險。
+4.  **Increased Feature Dimensionality**:
+    *   It increases the number of features. If the original feature dimension is already high, this could increase model training time and the risk of overfitting.
 
-## 3. 濾波器階數 (Filter Order) 的分析
+## 3. Analysis of Filter Order
 
-在我們的配置中，使用了 **4 階 (4th-order)** 的 Butterworth 濾波器。階數決定了濾波器的**過渡帶寬度**。
+In our configuration, a **4th-order** Butterworth filter is used. The order of the filter determines the **width of the transition band**.
 
--   **低階濾波器 (如 1-2 階)**:
-    *   **優點**: 計算快，相位失真小。
-    *   **缺點**: 過渡帶很「緩」，對頻率的「切割」不夠乾淨。
+-   **Low-order Filters (e.g., 1st-2nd order)**:
+    *   **Pros**: Computationally fast, minimal phase distortion.
+    *   **Cons**: The transition band is very "gradual," meaning the frequency "cutoff" is not very sharp.
 
--   **高階濾波器 (如 8 階或更高)**:
-    *   **優點**: 過渡帶非常「陡峭」，頻率選擇性極好。
-    *   **缺點**: 計算成本更高，且會引入更顯著的相位失真（時間延遲）。
+-   **High-order Filters (e.g., 8th order or higher)**:
+    *   **Pros**: The transition band is very "steep," providing excellent frequency selectivity.
+    *   **Cons**: Higher computational cost and introduces more significant phase distortion (time delay).
 
-**為什麼 4 階是一個好的選擇？**
+**Why is 4th-order a good choice?**
 
-選擇 **4 階**是在**頻率選擇性**和**相位失真**之間取得的一個經典平衡點。它足夠「陡峭」以乾淨地分離頻帶，同時相位失真在可接受的範圍內，不會過度扭曲信號的時間特性。在 BCI 研究中，3 階到 5 階的 Butterworth 濾波器是最常見的選擇，是一個經過實踐檢驗的、穩健可靠的參數範圍。
+Choosing the **4th order** represents a classic trade-off between **frequency selectivity** and **phase distortion**. It is "steep" enough to cleanly separate frequency bands, while the phase distortion remains within an acceptable range, preventing excessive distortion of the signal's temporal characteristics. In BCI research, Butterworth filters of the 3rd to 5th order are the most common choices, representing a robust and empirically validated parameter range.

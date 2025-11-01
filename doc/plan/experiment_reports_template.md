@@ -2,32 +2,32 @@
 
 **1. Research Question**
 
-*   *在此清晰地定義本次實驗要探討的核心問題。*
-*   *例如：本次實驗是否能透過 [特定特徵] 提升 [某事件] 的預測準確率？或是，[某種模型] 是否比基準模型表現更好？*
+*   *Clearly define the core question this experiment aims to investigate.*
+*   *For example: Can this experiment improve the prediction accuracy of [specific event] through [specific features]? Or, does [certain model] perform better than the baseline model?*
 
 **2. Methodology**
 
 *   **Model:**
-    *   *描述您將使用的模型或演算法。*
-    *   *例如：梯度提升機 (XGBoost)、卷積神經網路 (CNN) 等。*
+    *   *Describe the model or algorithm you will use.*
+    *   *For example: Gradient Boosting Machine (XGBoost), Convolutional Neural Network (CNN), etc.* 
 
 *   **Features:**
-    *   *說明您將使用哪些特徵進行訓練。*
-    *   *例如：原始 EEG 數據、頻譜特徵 (如傅立葉轉換)、小波轉換特徵，或是前一個實驗篩選出的特定通道組合。*
+    *   *Explain which features you will use for training.*
+    *   *For example: Raw EEG data, spectral features (e.g., Fourier Transform), wavelet transform features, or specific channel combinations filtered from previous experiments.*
 
 *   **Procedure:**
-    1.  *條列式說明實驗的具體執行步驟。*
-    2.  *例如：資料預處理流程、模型訓練的細節、交叉驗證的策略等。*
-    3.  *定義您將用來評估模型表現的主要指標 (例如：AUC, Accuracy, F1-score)。*
+    1.  *List the specific execution steps of the experiment.*
+    2.  *For example: Data preprocessing flow, model training details, cross-validation strategy, etc.*
+    3.  *Define the main metrics you will use to evaluate model performance (e.g., AUC, Accuracy, F1-score).*
 
 **3. Key Findings & Analysis**
 
-*   *在此總結實驗得出的主要結果與觀察。*
-*   *建議使用數據或圖表來支撐您的發現 (例如：平均 AUC 分數、特定通道的表現變化等)。*
-*   *分析這些結果背後的可能原因，並與過去的實驗結果進行比較。*
+*   *Summarize the main results and observations from the experiment.*
+*   *It is recommended to use data or charts to support your findings (e.g., average AUC scores, changes in specific channel performance, etc.).*
+*   *Analyze the possible reasons behind these results and compare them with past experimental results.*
 
 **4. Conclusion & Next Steps**
 
-*   *總結本次實驗的主要結論，並直接回答第一部分提出的研究問題。*
-*   *根據本次實驗的發現，提出具體的後續步驟或下一個實驗 (`Experiment [Next Number]`) 的設計方向。*
-*   *例如：下一步將嘗試更複雜的模型，或是將表現最好的特徵組合應用到所有受試者上。*
+*   *Summarize the main conclusions of this experiment and directly answer the research question posed in the first section.*
+*   *Based on the findings of this experiment, propose concrete next steps or the design direction for the next experiment (`Experiment [Next Number]`).*
+*   *For example: The next step will be to try more complex models, or to apply the best performing feature combination to all subjects.*

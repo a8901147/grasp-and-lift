@@ -1,103 +1,103 @@
-### 開發計畫：從基礎分析到進階模型的迭代策略
+### Development Plan: An Iterative Strategy from Foundational Analysis to Advanced Models
 
-本計畫旨在透過一個清晰、迭代的流程，逐步建立一個能夠應對個體差異、具備高準確度的 EEG 事件檢測模型。
-
----
-
-### **核心實驗哲學：解耦特徵與模型評估 (Core Experimental Philosophy)**
-
-為了確保實驗的效率與結果的可靠性，我們採用**平行工作流程 (Parallel Workflow)**，將「特徵工程的有效性」與「模型演算法的複雜度」這兩個變因解耦，分開進行評估。
-
-**這個設計的優勢在於：**
-
-1.  **快速建立基準 (Fast Baseline)**: 我們使用簡單、快速且穩定的模型（如 **Logistic Regression**）作為評估特徵好壞的「感測器」。這使我們能迅速判斷一個特徵工程策略是否有效，而無需等待複雜模型的漫長訓練。
-2.  **避免資源錯配 (Avoid Wasted Efforts)**: 如果直接在未經驗證的特徵上使用複雜模型（如 CNN），當結果不佳時，我們將難以判斷是特徵的問題還是模型的問題。本方法論可以避免在無效特徵上花費大量時間去進行模型調優。
-3.  **系統性迭代 (Systematic Iteration)**:
-    *   **特徵管線 (Feature Pipeline)**: 專注於比較不同特徵（原始訊號、濾波器組等）在同一個簡單基準模型上的表現，以證明特徵的價值。
-    *   **模型管線 (Model Pipeline)**: 在一組固定的、已被驗證有效的特徵集上，比較不同複雜度模型（SVM, CNN, RNN 等）的表現，以衡量模型帶來的提升。
-
-**總結：先用簡單模型驗證特徵，再用最佳特徵搭配先進模型。** 整個開發計畫將遵循此核心原則。
+This plan aims to progressively build a high-accuracy EEG event detection model capable of handling individual differences through a clear, iterative process.
 
 ---
 
-#### **第一階段：基礎分析與特徵工程 (Foundational Analysis & Feature Engineering)**
+### **Core Experimental Philosophy: Decoupling Feature and Model Evaluation**
 
-**目標**：遵循核心實驗哲學，為單一的 `(個體, 事件, 通道)` 模型找到最有效的數據特徵與超參數組合，建立一個穩健的建模方法論。
+To ensure the efficiency and reliability of our experiments, we adopt a **Parallel Workflow** that decouples the evaluation of "feature engineering effectiveness" from "model algorithm complexity."
 
-1.  **基準模型建立 (Baseline Establishment)**
-    *   **目的**: 驗證單一 channel 的原始 EEG 訊號是否包含足夠的預測資訊，並為後續的改進建立一個客觀的比較基準。
-    *   **對應實驗**: `@doc/experiment_reports/baseline_raw_signal/`
-    *   **已完成**: 此階段已確認，即使是原始訊號，特定 channel 對特定事件也具備一定的預測能力。
+**The advantages of this design are:**
 
-2.  **特徵工程評估 (Feature Engineering Evaluation)**
-    *   **目的**: 評估 `leadership_code` 中使用的 Filter Bank 特徵工程技術，是否能顯著提升基準模型的表現。
-    *   **對應實驗**: `@doc/experiment_reports/feature_filterbank_v1/`
-    *   **已完成**: 此階段已證實，Filter Bank 能夠大幅提升模型的 AUC 分數，應作為後續實驗的標準流程。
+1.  **Fast Baseline Establishment**: We use a simple, fast, and stable model (like **Logistic Regression**) as a "sensor" to evaluate the quality of features. This allows us to quickly determine if a feature engineering strategy is effective without waiting for the lengthy training of complex models.
+2.  **Avoid Wasted Efforts**: If we directly use a complex model (like a CNN) on unverified features, it becomes difficult to ascertain whether poor results stem from the features or the model. This methodology prevents wasting significant time on model tuning with ineffective features.
+3.  **Systematic Iteration**:
+    *   **Feature Pipeline**: Focuses on comparing the performance of different features (raw signal, filter banks, etc.) on the same simple baseline model to prove the value of the features.
+    *   **Model Pipeline**: On a fixed set of validated, effective features, we compare the performance of models with varying complexity (SVM, CNN, RNN, etc.) to measure the improvements brought by the models themselves.
 
-3.  **超參數最佳化 (Hyperparameter Optimization)**
-    *   **目的**: 針對 Filter Bank 特徵提取器，系統性地尋找一組比預設參數更優的截止頻率組合，以最大化單一模型的預測潛力。
-    *   **對應實驗**: `@doc/experiment_reports/optimize_filterbank_freqs/`
-    *   **進行中**: 此階段旨在為每一個獨立的 `(個體, 事件, 通道)` 模型找到其專屬的最佳頻率。
-
-**階段性結論**: 完成此階段後，我們將擁有一套經過驗證且最佳化的方法，可用於訓練任何一個指定的 `(個體, 事件, 通道)` 模型。
+**Summary: First, validate features with a simple model, then pair the best features with advanced models.** The entire development plan will adhere to this core principle.
 
 ---
 
-#### **第二階段：通用性驗證與模型擴展 (Generalization & Model Scaling)**
+#### **Phase 1: Foundational Analysis & Feature Engineering**
 
-**目標**：將第一階段建立的最佳建模方法應用於所有目標，系統性地分析模型在不同事件與個體之間的表現差異，並制定最終的預測策略。
+**Goal**: Following the core experimental philosophy, find the most effective data features and hyperparameter combinations for a single `(subject, event, channel)` model to establish a robust modeling methodology.
 
-1.  **事件通用性分析 (Event Generalization)**
-    *   **流程**: 選定單一個體 (例如 `subj1`)，使用第一階段的最佳方法，為其**所有 6 個事件**分別訓練模型。
-    *   **分析**: 比較同一個體在不同事件上的模型表現，了解哪些事件本身較易或較難預測。
+1.  **Baseline Establishment**
+    *   **Objective**: To verify if the raw EEG signal from a single channel contains sufficient predictive information and to establish an objective benchmark for future improvements.
+    *   **Corresponding Experiment**: `@doc/experiment_reports/baseline_raw_signal/`
+    *   **Completed**: This phase has confirmed that even raw signals from specific channels have some predictive power for certain events.
 
-2.  **個體差異分析 (Subject Generalization)**
-    *   **流程**: 將第一階段的最佳方法應用於**所有 12 位個體**的**所有 32 個 channels** 與**所有 6 個事件**。
-    *   **分析**: 比較不同個體之間的模型表現。若表現差異顯著，則證實為每個個體建立專屬模型 (Subject-Specific Models) 的必要性。
+2.  **Feature Engineering Evaluation**
+    *   **Objective**: To evaluate whether the Filter Bank feature engineering technique used in the `leadership_code` can significantly improve the baseline model's performance.
+    *   **Corresponding Experiment**: `@doc/experiment_reports/feature_filterbank_v1/`
+    *   **Completed**: This phase has demonstrated that the Filter Bank can substantially increase the model's AUC score and should be adopted as a standard procedure for subsequent experiments.
 
-3.  **最終策略制定 (Final Strategy Formulation)**
-    *   **決策**: 根據分析結果，決定最終的建模策略。
-        *   **策略 A (最可能)**: 為每個個體訓練一組專屬的模型。
-        *   **策略 B**: 若個體差異不大，嘗試訓練一個能適用於所有個體的通用模型。
+3.  **Hyperparameter Optimization**
+    *   **Objective**: To systematically find a set of cutoff frequency combinations for the Filter Bank feature extractor that is superior to the default parameters, maximizing the predictive potential of a single model.
+    *   **Corresponding Experiment**: `@doc/experiment_reports/optimize_filterbank_freqs/`
+    *   **In Progress**: This stage aims to find the optimal, dedicated frequencies for each individual `(subject, event, channel)` model.
 
----
-
-#### **第三階段：進階模型與預測 (Advanced Modeling & Prediction)**
-
-**目標**：基於前兩個階段的結論，建立用於最終預測的高性能模型，並產生提交檔案。
-
-1.  **多通道模型 (Multi-Channel Models)**
-    *   **流程**: 根據第二階段的分析結果，為每個 `(個體, 事件)` 組合篩選出表現最好的 Top-N 個 channels，將它們的特徵結合起來，訓練一個多通道模型。
-    *   **研究問題**: 結合多個高相關性 channel 的特徵，是否能顯著提升預測準確率？
-
-2.  **模型融合 (Ensembling)**
-    *   **流程**: 嘗試將不同模型 (例如，來自不同 channel 或使用不同特徵集的模型) 的預測結果進行加權平均或堆疊 (stacking)，以進一步提升穩定性與準確度。
-
-3.  **預測與提交 (Prediction & Submission)**
-    *   **流程**: 使用最終選定的模型，對測試集 (`series9`, `series10`) 進行預測，並產生符合格式的 `submission.csv` 檔案。
+**Phase Conclusion**: Upon completion of this phase, we will have a validated and optimized methodology for training any given `(subject, event, channel)` model.
 
 ---
 
-#### **第四階段：進階優化與泛化能力強化 (Advanced Optimization & Generalization)**
+#### **Phase 2: Generalization & Model Scaling**
 
-**目標**：在追求極致性能的同時，建立一套嚴謹的驗證與優化框架，確保模型不僅在已知驗證集上表現優異，更能穩定地泛化到未來的未知數據，有效控制過擬合風險。
+**Goal**: Apply the optimal modeling method established in Phase 1 to all targets, systematically analyze model performance differences across various events and subjects, and formulate the final prediction strategy.
 
-1.  **建立更穩健的驗證機制 (Robust Validation Strategy)**
-    *   **問題**: 當前依賴固定驗證集 (`series 7-8`) 的優化方式，存在對該特定數據集過擬合的風險。
-    *   **策略：時序交叉驗證 (Time Series Cross-Validation)**
-        *   **實施**: 將優化目標從「最大化單一驗證集的 AUC」改為「最大化多個交叉驗證摺頁 (Folds) 的平均 AUC」。例如，可設計如下摺頁：
-            *   **Fold 1**: 訓練 `series 1-4`, 驗證 `series 5-6`
-            *   **Fold 2**: 訓練 `series 1-6`, 驗證 `series 7-8`
-        *   **收益**: 確保找到的超參數在多個不同數據子集上都表現穩健，從而學到更具泛化能力的普遍規律。
+1.  **Event Generalization Analysis**
+    *   **Process**: Select a single subject (e.g., `subj1`) and use the optimal method from Phase 1 to train models for all **6 events** separately.
+    *   **Analysis**: Compare the model's performance on different events for the same subject to understand which events are inherently easier or harder to predict.
 
-2.  **迭代式優化搜索空間 (Iterative Search Space Refinement)**
-    *   **問題**: 過於自由和複雜的搜索空間（例如，允許任意數量、任意類型的濾波器）會顯著增加過擬合風險。
-    *   **策略：由簡入繁，基於先驗知識限制模型複雜度**
-        *   **限制頻率範圍**: 基於神經科學知識，將頻率搜索上限限制在有意義的腦波範圍內（如 45-60 Hz），避免模型去擬合高頻噪音。
-        *   **結構性迭代**: 逐步增加濾波器設計的自由度。例如，下一步可嘗試將優化目標從 `exp1-C` 的「10個低通濾波器」改為「**5個獨立帶通濾波器**的上下邊界」。此舉在賦予模型更高靈活性的同時，也將搜索空間維持在可控範圍內。
+2.  **Subject Generalization Analysis**
+    *   **Process**: Apply the optimal method from Phase 1 to **all 32 channels** and **all 6 events** for **all 12 subjects**.
+    *   **Analysis**: Compare model performance across different subjects. If significant performance differences are observed, it confirms the necessity of creating Subject-Specific Models.
 
-3.  **整合多層次正則化 (Multi-Level Regularization)**
-    *   **問題**: 需要有機制在優化過程中主動「懲罰」不必要的複雜度。
-    *   **策略：在模型與優化目標中引入正則化**
-        *   **模型層面**: 在底層的分類模型（如邏輯斯迴歸）中，始終啟用 L2 正則化，以懲罰過大的模型權重，降低對單一特徵的依賴。
-        *   **優化目標層面 (進階)**: 在貝葉斯優化的目標函數中，引入對複雜度的懲罰項。例如，`目標 = 平均 AUC - λ * (濾波器數量)`。這將引導優化器在「性能增益」與「模型簡潔性」之間尋求最佳平衡。
+3.  **Final Strategy Formulation**
+    *   **Decision**: Based on the analysis, decide on the final modeling strategy.
+        *   **Strategy A (Most Likely)**: Train a dedicated set of models for each subject.
+        *   **Strategy B**: If inter-subject variability is low, attempt to train a universal model applicable to all subjects.
+
+---
+
+#### **Phase 3: Advanced Modeling & Prediction**
+
+**Goal**: Based on the conclusions from the first two phases, build high-performance models for final prediction and generate the submission file.
+
+1.  **Multi-Channel Models**
+    *   **Process**: Based on the analysis from Phase 2, select the top-N performing channels for each `(subject, event)` combination. Combine their features to train a multi-channel model.
+    *   **Research Question**: Can combining features from multiple highly relevant channels significantly improve prediction accuracy?
+
+2.  **Ensembling**
+    *   **Process**: Attempt to combine the predictions of different models (e.g., from different channels or using different feature sets) through weighted averaging or stacking to further enhance stability and accuracy.
+
+3.  **Prediction & Submission**
+    *   **Process**: Use the final selected model to make predictions on the test set (`series9`, `series10`) and generate the `submission.csv` file in the required format.
+
+---
+
+#### **Phase 4: Advanced Optimization & Generalization Enhancement**
+
+**Goal**: While pursuing peak performance, establish a rigorous validation and optimization framework to ensure the model not only excels on the known validation set but also generalizes robustly to future, unseen data, effectively controlling the risk of overfitting.
+
+1.  **Establish a More Robust Validation Strategy**
+    *   **Problem**: The current optimization approach, which relies on a fixed validation set (`series 7-8`), is at risk of overfitting to that specific dataset.
+    *   **Strategy: Time Series Cross-Validation**
+        *   **Implementation**: Shift the optimization objective from "maximizing AUC on a single validation set" to "maximizing the average AUC across multiple cross-validation folds." For example, the folds could be designed as follows:
+            *   **Fold 1**: Train on `series 1-4`, validate on `series 5-6`
+            *   **Fold 2**: Train on `series 1-6`, validate on `series 7-8`
+        *   **Benefit**: This ensures that the found hyperparameters are robust across different data subsets, leading to the learning of more generalizable patterns.
+
+2.  **Iterative Search Space Refinement**
+    *   **Problem**: An overly free and complex search space (e.g., allowing an arbitrary number and type of filters) would significantly increase the risk of overfitting.
+    *   **Strategy: From Simple to Complex, Constraining Model Complexity with Prior Knowledge**
+        *   **Limit Frequency Range**: Based on neuroscience knowledge, constrain the frequency search upper limit to a meaningful brainwave range (e.g., 45-60 Hz) to prevent the model from fitting to high-frequency noise.
+        *   **Structured Iteration**: Gradually increase the degrees of freedom in the filter design. For example, the next step could be to change the optimization target from `exp1-C`'s "10 low-pass filters" to "the upper and lower bounds of **5 independent band-pass filters**." This grants the model more flexibility while keeping the search space manageable.
+
+3.  **Integrate Multi-Level Regularization**
+    *   **Problem**: A mechanism is needed to actively "penalize" unnecessary complexity during the optimization process.
+    *   **Strategy: Introduce Regularization at Both the Model and Objective Function Levels**
+        *   **Model Level**: In the underlying classification model (e.g., Logistic Regression), always enable L2 regularization to penalize large model weights, reducing dependency on single features.
+        *   **Objective Function Level (Advanced)**: In the Bayesian optimization objective function, introduce a penalty term for complexity. For example, `Objective = Average AUC - λ * (Number of Filters)`. This will guide the optimizer to find the best balance between "performance gain" and "model simplicity."

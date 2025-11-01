@@ -1,100 +1,100 @@
-# 專案需求解讀與核心挑戰分析
+# Project Requirements Interpretation and Core Challenge Analysis
 
-本文檔旨在記錄閱讀完專案需求後，針對關鍵技術規格所做的延伸思考。這些分析將作為後續所有實驗設計、特徵工程與模型開發的基礎指導原則。
+This document aims to record extended thoughts on key technical specifications after reviewing the project requirements. These analyses will serve as fundamental guiding principles for all subsequent experiment designs, feature engineering, and model development.
 
-## 1. 500Hz 採樣率的深層意義
+## 1. The Deeper Meaning of 500Hz Sampling Rate
 
-`data.md` 中明確指出 EEG 數據的採樣率為 500Hz。這不僅僅是一個技術參數，它直接定義了我們能做什麼以及該如何做。
+`data.md` explicitly states that the EEG data's sampling rate is 500Hz. This is not merely a technical parameter; it directly defines what we can do and how we should do it.
 
-*   **時間精度與數據量**: 500Hz 意味著每兩個數據點之間僅間隔 2 毫秒。這為我們提供了極高的時間解析度，使精確捕捉大腦活動的細微變化成為可能。同時，這也意味著數據量龐大，對計算效率提出了挑戰。
+*   **Temporal Precision and Data Volume**: 500Hz means only a 2-millisecond interval between any two data points. This provides us with extremely high temporal resolution, making it possible to precisely capture subtle changes in brain activity. Simultaneously, this implies a large volume of data, posing a challenge to computational efficiency.
 
-*   **奈奎斯特頻率的約束**: 根據採樣定理，我們能分析的有效頻率上限為 250Hz。這指導了我們在進行濾波或頻譜分析時，必須將頻率範圍限制在 250Hz 以內，以避免信號混疊失真。因此，任何基於頻率的特徵工程都應集中在遠低於此上限的、與生理活動相關的頻段。
+*   **Nyquist Frequency Constraint**: According to the sampling theorem, the effective frequency upper limit we can analyze is 250Hz. This guides us to restrict the frequency range to within 250Hz during filtering or spectral analysis to avoid signal aliasing distortion. Therefore, any frequency-based feature engineering should focus on physiologically relevant bands well below this upper limit.
 
-*   **時間與幀的換算**: 需求中所有以「毫秒」為單位定義的規則，都必須透過 500Hz 的採樣率轉換為「幀」。例如，`+/- 150ms` 的標籤窗口直接對應到 `+/- 75` 幀。這個換算關係是數據預處理的基礎。
+*   **Conversion between Time and Frames**: All rules defined in "milliseconds" in the requirements must be converted to "frames" using the 500Hz sampling rate. For example, a `+/- 150ms` label window directly corresponds to `+/- 75` frames. This conversion relationship is fundamental to data preprocessing.
 
-## 2. 「+/- 150ms 標籤窗口」的核心矛盾與啟示
+## 2. The Core Contradiction and Revelation of the "+/- 150ms Label Window"
 
-這是整個專案最巧妙也最具挑戰性的規則之一。它將問題的性質從簡單的模式識別，轉變為一個更貼近真實應用的預測任務。
+This is one of the most ingenious and challenging rules of the entire project. It transforms the nature of the problem from simple pattern recognition into a prediction task closer to real-world applications.
 
-*   **核心矛盾：標籤的「對稱性」 vs. 數據的「非對稱性」**
-    *   **標籤的產生（對稱）**: 一個事件的標籤（Label=1）覆蓋了事件發生點**前後**各 150ms 的範圍。這意味著標籤本身是利用了「未來」的資訊生成的。
-    *   **模型的預測（非對稱）**: 然而，我們的模型在預測任何時間點 `t` 的標籤時，嚴格遵守「禁止使用未來數據」的規則，即**只能**使用 `t` 時刻及之前的數據。
+*   **Core Contradiction: "Symmetry" of Labels vs. "Asymmetry" of Data**
+    *   **Label Generation (Symmetric)**: A label (Label=1) for an event covers a range of 150ms **before and after** the event occurrence. This means the label itself is generated using "future" information.
+    *   **Model Prediction (Asymmetric)**: However, our model, when predicting the label for any time point `t`, strictly adheres to the "no future data" rule, meaning it **can only** use data at time `t` and before.
 
-*   **啟示：任務的本質是「預測」，而非「反應」**
-    *   這個核心矛盾決定了我們的模型必須學會**預見**事件的發生，而不是在事件發生後做出**反應**。
-    *   例如，當真實事件發生在第 1000 幀時，模型需要在第 930 幀（事件發生前 140ms）就根據過去的信號，預測出標籤 `1`。
-    *   因此，整個特徵工程的重點必須放在如何從 EEG 信號中提取出能夠反映「運動準備」或「運動意圖」的**「前兆」特徵**。這也解釋了為什麼低頻腦波（如運動準備電位）的研究如此重要。
+*   **Revelation: The Nature of the Task is "Prediction," Not "Reaction"**
+    *   This core contradiction dictates that our model must learn to **foresee** the occurrence of an event, rather than **reacting** after the event has happened.
+    *   For example, when a real event occurs at frame 1000, the model needs to predict label `1` at frame 930 (140ms before the event) based on past signals.
+    *   Therefore, the focus of all feature engineering must be on how to extract **"precursor" features** from EEG signals that reflect "motor preparation" or "motor intention." This also explains why research into low-frequency brainwaves (such as readiness potentials) is so important.
 
-## 2. 「+/- 150ms 標籤窗口」的核心矛盾與啟示
+## 2. The Core Contradiction and Revelation of the "+/- 150ms Label Window"
 
-這是整個專案最巧妙也最具挑戰性的規則之一。它將問題的性質從簡單的模式識別，轉變為一個更貼近真實應用的預測任務。
+This is one of the most ingenious and challenging rules of the entire project. It transforms the nature of the problem from simple pattern recognition into a prediction task closer to real-world applications.
 
-*   **核心矛盾：標籤的「對稱性」 vs. 數據的「非對稱性」**
-    *   **標籤的產生（對稱）**: 一個事件的標籤（Label=1）覆蓋了事件發生點**前後**各 150ms 的範圍。這意味著標籤本身是利用了「未來」的資訊生成的。
-    *   **模型的預測（非對稱）**: 然而，我們的模型在預測任何時間點 `t` 的標籤時，嚴格遵守「禁止使用未來數據」的規則，即**只能**使用 `t` 時刻及之前的數據。
+*   **Core Contradiction: "Symmetry" of Labels vs. "Asymmetry" of Data**
+    *   **Label Generation (Symmetric)**: A label (Label=1) for an event covers a range of 150ms **before and after** the event occurrence. This means the label itself is generated using "future" information.
+    *   **Model Prediction (Asymmetric)**: However, our model, when predicting the label for any time point `t`, strictly adheres to the "no future data" rule, meaning it **can only** use data at time `t` and before.
 
-*   **啟示：任務的本質是「預測」，而非「反應」**
-    *   這個核心矛盾決定了我們的模型必須學會**預見**事件的發生，而不是在事件發生後做出**反應**。
-    *   例如，當真實事件發生在第 1000 幀時，模型需要在第 930 幀（事件發生前 140ms）就根據過去的信號，預測出標籤 `1`。
-    *   因此，整個特徵工程的重點必須放在如何從 EEG 信號中提取出能夠反映「運動準備」或「運動意圖」的**「前兆」特徵**。這也解釋了為什麼低頻腦波（如運動準備電位）的研究如此重要。
+*   **Revelation: The Nature of the Task is "Prediction," Not "Reaction"**
+    *   This core contradiction dictates that our model must learn to **foresee** the occurrence of an event, rather than **reacting** after the event has happened.
+    *   For example, when a real event occurs at frame 1000, the model needs to predict label `1` at frame 930 (140ms before the event) based on past signals.
+    *   Therefore, the focus of all feature engineering must be on how to extract **"precursor" features** from EEG signals that reflect "motor preparation" or "motor intention." This also explains why low-frequency brainwave research (such as readiness potentials) is so important.
 
-### 2.1 標籤窗口對特徵窗口設計的啟示
+### 2.1 Implications of the Label Window for Feature Window Design
 
-*   **基礎觀察與初始猜想**: 標籤的定義是基於事件發生點 `+/- 150ms` (即 `+/- 75` 幀) 的窗口。這強烈暗示了與事件相關的神經活動模式，其時間尺度大約在 300ms 左右。雖然特徵窗口必須嚴格地在 `t` 時刻之前，但標籤窗口的寬度為我們選擇特徵窗口的長度提供了一個有力的參考。一個合理的起始點可能是將特徵窗口長度設定在 75 幀（150ms）到 250 幀（500ms）之間，並透過實驗來優化。
+*   **Basic Observation and Initial Hypothesis**: The label is defined based on a `+/- 150ms` (i.e., `+/- 75` frames) window around the event occurrence. This strongly suggests that event-related neural activity patterns have a time scale of approximately 300ms. Although the feature window must strictly precede time `t`, the width of the label window provides a strong reference for choosing the length of our feature window. A reasonable starting point might be to set the feature window length between 75 frames (150ms) and 250 frames (500ms) and optimize through experimentation.
 
-#### 核心權衡與進階策略
+#### Core Trade-offs and Advanced Strategies
 
-將特徵窗口的長度設定為一個關鍵的超參數 (Hyperparameter)，其選擇涉及以下權衡：
+Setting the length of the feature window as a critical hyperparameter involves the following trade-offs:
 
-*   **窗口太短 (例如 `N=20` 幀, 40ms):**
-    *   **優點**: 反應快，能捕捉到非常瞬時的信號變化。
-    *   **缺點**: 可能因為窗口太短，無法捕捉到完整的、需要一定時間來發展的「運動準備」信號。計算出的特徵可能不穩定。
+*   **Window Too Short (e.g., `N=20` frames, 40ms):**
+    *   **Pros**: Fast response, can capture very transient signal changes.
+    *   **Cons**: May fail to capture complete "motor preparation" signals that require a certain time to develop, due to the short window. Calculated features might be unstable.
 
-*   **窗口適中 (例如 `N=75` 到 `250` 幀, 150ms - 500ms):**
-    *   **優點**: 這是一個很合理的範圍。它既足夠長，可以捕捉到緩慢變化的準備信號，也足夠短，不會包含太多不相關的歷史信息。
-    *   **推測**: 這很可能是許多事件的最佳範圍，是一個有數據支撐的、明智的初始猜想。
+*   **Moderate Window (e.g., `N=75` to `250` frames, 150ms - 500ms):**
+    *   **Pros**: This is a very reasonable range. It is long enough to capture slowly changing preparatory signals and short enough not to include too much irrelevant historical information.
+    *   **Conjecture**: This is likely the optimal range for many events, a data-backed, intelligent initial hypothesis.
 
-*   **窗口太長 (例如 `N=500` 幀, 1000ms):**
-    *   **優點**: 可以分析更低頻的信號，計算出的頻譜特徵解析度更高（這與奈奎斯特最高頻率限制不衝突）。
-    *   **缺點**: 可能會「稀釋」掉關鍵的事件前兆信號，因為窗口中包含了太多與當前意圖無關的舊信息。
+*   **Window Too Long (e.g., `N=500` frames, 1000ms):**
+    *   **Pros**: Can analyze lower-frequency signals, and calculated spectral features have higher resolution (this does not conflict with the Nyquist maximum frequency limit).
+    *   **Cons**: May "dilute" critical event precursor signals because the window contains too much old information irrelevant to the current intention.
 
-#### 核心實踐策略：
+#### Core Practical Strategies:
 
-1.  **多尺度特徵 (Multi-Scale Features)**: 我們不必只選擇一個窗口。一個更強大的策略是**同時使用多個不同寬度的窗口**。例如，在 `t` 時刻，我們可以分別計算 `t-40ms`, `t-200ms`, `t-600ms` 三個窗口內的特徵，然後將這些特徵拼接 (concatenate) 起來，形成一個更豐富的特徵向量。這使得模型可以同時觀察到信號的瞬時變化和長期趨勢。
+1.  **Multi-Scale Features**: We don't have to choose just one window. A more powerful strategy is to **simultaneously use multiple windows of different widths**. For example, at time `t`, we can calculate features within `t-40ms`, `t-200ms`, and `t-600ms` windows separately, then concatenate these features to form a richer feature vector. This allows the model to observe both instantaneous changes and long-term trends in the signal.
 
-2.  **事件特異性 (Event-Specific Windows)**: 不同的事件可能對應不同的最佳窗口長度。例如，`HandStart`（運動規劃）可能更依賴長窗口來捕捉準備電位，而 `FirstDigitTouch`（感覺反饋）的相關信號可能時間尺度更短。因此，為不同事件的獨立模型尋找各自最佳的窗口（或窗口組合）是一個重要的優化方向。
+2.  **Event-Specific Windows**: Different events may correspond to different optimal window lengths. For example, `HandStart` (motor planning) might rely more on longer windows to capture readiness potentials, while `FirstDigitTouch` (sensory feedback) related signals might have shorter time scales. Therefore, finding the optimal window (or window combination) for independent models of different events is an important optimization direction.
 
-3.  **實驗驅動**: 最佳的窗口大小（或組合）必須透過嚴謹的實驗來尋找。這將是我們模型調優階段的核心任務之一。
+3.  **Experiment-Driven**: The optimal window size (or combination) must be found through rigorous experimentation. This will be one of the core tasks in our model tuning phase.
 
-## 3. 模型的泛化性挑戰：個體差異 (Subject Variability)
+## 3. Model Generalizability Challenge: Subject Variability
 
-*   **基礎觀察**: 數據來自 12 個不同的受試者 (`subject`)。在腦電圖（EEG）研究中，一個眾所周知的事實是**信號存在巨大的個體間差異**。每個人的大腦結構、頭皮厚度、甚至當天的精神狀態都會導致 EEG 模式的不同。
-*   **直接推論**:
-    *   **策略一（個體化模型）**: 為每一位受試者單獨訓練一個模型。這可能是最直接且有效的方法，因為模型可以專注於學習特定個體的獨特腦電模式。
-    *   **策略二（通用模型）**: 訓練一個試圖適用於所有受試者的通用模型。這個挑戰更大，因為模型需要學會在巨大的個體差異中找到共通的模式，這通常需要更複雜的模型結構和更精巧的特徵工程。
-*   **對研究的影響**: 這個觀察讓我們在專案一開始就面臨一個關鍵的策略選擇：是走「為每個人量身訂做」的路線，還是走「尋找普適規律」的路線？這將直接影響我們如何組織訓練數據和設計實驗流程。
+*   **Basic Observation**: Data comes from 12 different subjects. In Electroencephalography (EEG) research, it is a well-known fact that **signals exhibit huge inter-individual variability**. Each person's brain structure, scalp thickness, and even daily mental state can lead to different EEG patterns.
+*   **Direct Inference**:
+    *   **Strategy One (Individualized Models)**: Train a separate model for each subject. This is likely the most direct and effective method, as the model can focus on learning the unique brainwave patterns of a specific individual.
+    *   **Strategy Two (Universal Model)**: Train a general model that attempts to apply to all subjects. This is a greater challenge because the model needs to learn common patterns amidst significant individual differences, which usually requires more complex model structures and more sophisticated feature engineering.
+*   **Impact on Research**: This observation presents us with a critical strategic choice at the beginning of the project: whether to pursue a "tailor-made for each person" approach or a "seek universal patterns" approach? This will directly influence how we organize training data and design experimental procedures.
 
-## 4. 事件的時序依賴性 (Sequential Nature of Events)
+## 4. Sequential Nature of Events
 
-*   **基礎觀察**: 需求明確指出，六個事件（`HandStart`, `FirstDigitTouch`, `BothStartLoadPhase`, `LiftOff`, `Replace`, `BothReleased`）總是**依序發生**。
-*   **直接推論**:
-    *   **簡化策略（獨立預測）**: 最簡單的方法是忽略這個順序，為六個事件分別訓練六個獨立的模型。這也是一個合理的起點。
-    *   **進階策略（利用時序）**: 一個更進階的想法是利用這個時序資訊。例如，如果獨立模型預測出了一個不符合邏輯順序的結果，我們可以用這個規則來修正預測，提高整體準確性。未來也可以考慮使用能處理序列資訊的模型來同時預測所有事件，讓模型自己學會這種時序依賴。
-*   **對研究的影響**: 這個規則為我們提供了一個寶貴的領域知識（domain knowledge）。即使在初期我們選擇獨立預測，它也為後續的模型優化和後處理流程提供了明確的方向。
+*   **Basic Observation**: Requirements explicitly state that the six events (`HandStart`, `FirstDigitTouch`, `BothStartLoadPhase`, `LiftOff`, `Replace`, `BothReleased`) always occur **sequentially**.
+*   **Direct Inference**:
+    *   **Simplification Strategy (Independent Prediction)**: The simplest approach is to ignore this order and train six independent models for the six events separately. This is a reasonable starting point.
+    *   **Advanced Strategy (Utilizing Sequence)**: A more advanced idea is to utilize this temporal information. For example, if an independent model predicts a result that does not conform to the logical sequence, we can use this rule to correct the prediction, improving overall accuracy. In the future, we can also consider using models that can handle sequential information to predict all events simultaneously, allowing the model to learn this temporal dependency itself.
+*   **Impact on Research**: This rule provides us with valuable domain knowledge. Even if we choose independent prediction initially, it offers a clear direction for subsequent model optimization and post-processing workflows.
 
-## 5. 評估指標的啟示：獨立事件與機率校準
+## 5. Implications of Evaluation Metrics: Independent Events and Probability Calibration
 
-*   **基礎觀察**: 評估指標是**平均欄位 AUC (Mean Column-wise AUC)**。
-*   **直接推論**:
-    *   **"Column-wise" (逐欄評估)**: 這意味著系統會獨立計算每一個事件（每一欄）的 AUC，然後再取平均。這再次印證了「為六個事件訓練六個獨立模型」是一個非常合理且直接的初始策略。模型的目標是讓每個事件的預測都盡可能好。
-    *   **"AUC"**: 這個指標關心的是預測機率的**排序**，而不是絕對值。模型需要能夠穩定地給出「正樣本的預測機率高於負樣本」，而不需要糾結於設定一個最佳的 0/1 分類閾值。
-    *   **"Mean" (平均)**: 這意味著六個事件同等重要，我們不能偏科，必須兼顧所有事件的預測性能。
-    *   **機率校準**: 需求中提到「submitted probabilities should be calibrated to be on a unified scale」。這暗示了我們的數據標準化（Standardization）或歸一化（Normalization）步驟需要非常穩健，以確保在不同受試者、不同系列之間，模型輸出的機率值是可以相互比較的。
+*   **Basic Observation**: The evaluation metric is **Mean Column-wise AUC**.
+*   **Direct Inference**:
+    *   **"Column-wise" (Per-Column Evaluation)**: This means the system will independently calculate the Area Under the ROC Curve (AUC) for each event column (e.g., `HandStart`, `FirstDigitTouch`, etc.), and then average all AUC scores. This again confirms that "training six independent models for six events" is a very reasonable and direct initial strategy. The model's goal is to make predictions for each event as good as possible.
+    *   **"AUC"**: This metric is concerned with the **ranking** of predicted probabilities, not their absolute values. The model needs to consistently output "positive sample probabilities higher than negative samples" without getting bogged down in setting an optimal 0/1 classification threshold.
+    *   **"Mean" (Average)**: This means all six events are equally important; we cannot specialize in one but must balance the predictive performance across all events.
+    *   **Probability Calibration**: The requirements mention that "submitted probabilities should be calibrated to be on a unified scale." This implies that our Standardization or Normalization steps need to be very robust to ensure that the model's output probabilities are comparable across different subjects and series.
 
-## 6. 綜合結論：指導後續研究的策略
+## 6. Comprehensive Conclusion: Strategies Guiding Future Research
 
-綜合以上分析，我們的核心任務可以總結為：
+Synthesizing the above analysis, our core task can be summarized as:
 
-> **如何設計有效的特徵和模型，使其能夠在嚴格的時序限制下，僅僅依賴歷史數據，去預測一個由未來事件所定義的標籤，同時兼顧個體差異、事件時序，並優化逐欄 AUC 性能。**
+> **How to design effective features and models that can, under strict temporal constraints, predict a label defined by future events solely based on historical data, while accounting for individual differences, event sequencing, and optimizing column-wise AUC performance.**
 
-這個指導思想將貫穿我們所有的研究工作，從數據預處理、特徵提取，到模型選擇與評估，都必須圍繞著「**事前預測**」這一核心目標來展開。
+This guiding principle will permeate all our research work, from data preprocessing and feature extraction to model selection and evaluation, all of which must revolve around the core objective of "**pre-event prediction**."
