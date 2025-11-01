@@ -3,18 +3,27 @@ import matplotlib.pyplot as plt
 import os
 import argparse
 import math
+import numpy as np
+from scipy.signal import butter, lfilter
 
-def plot_time_domain(subject_series):
+def plot_time_domain(subject_series, freqs=None):
     """
-    Plots the time domain signal for a given subject and series.
+    Plots the time domain signal for a given subject and series, with optional filtering.
 
     Args:
         subject_series (str): The subject and series identifier (e.g., 'subj1_series1').
+        freqs (list of float, optional): Cutoff frequencies for filtering.
+                                          - One value for lowpass.
+                                          - Two values for bandpass.
+                                          Defaults to None (no filtering).
     """
     script_dir = os.path.dirname(__file__)
     data_file = os.path.join(script_dir, '..', '..', 'data', 'train', f'{subject_series}_data.csv')
     output_dir = os.path.join(script_dir, '..', '..', 'out', subject_series)
-    output_file = os.path.join(output_dir, 'time_domain.png')
+    
+    # --- Prepare titles and filenames ---
+    title_suffix = ""
+    file_suffix = ""
 
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -28,6 +37,31 @@ def plot_time_domain(subject_series):
     except FileNotFoundError:
         print(f"Error: Data file not found at {data_file}")
         return
+
+    # --- Apply filtering if freqs are provided ---
+    if freqs:
+        sfreq = 500.0
+        if len(freqs) == 1:
+            f = freqs[0]
+            b, a = butter(5, f / (sfreq / 2.0), btype='lowpass')
+            title_suffix = f' - Lowpass @ {f} Hz'
+            file_suffix = f'_lowpass_{f}hz'
+            print(f"Applying 5th-order Butterworth low-pass filter with cutoff at {f} Hz...")
+        elif len(freqs) == 2:
+            f1, f2 = sorted(freqs)
+            b, a = butter(5, np.array([f1, f2]) / (sfreq / 2.0), btype='bandpass')
+            title_suffix = f' - Bandpass @ {f1}-{f2} Hz'
+            file_suffix = f'_bandpass_{f1}-{f2}hz'
+            print(f"Applying 5th-order Butterworth band-pass filter between {f1} and {f2} Hz...")
+        else:
+            print("Error: Please provide 1 frequency for lowpass or 2 for bandpass.")
+            return
+        
+        # Apply the filter and store back in a DataFrame
+        filtered_data = lfilter(b, a, data.values, axis=0)
+        data = pd.DataFrame(filtered_data, index=data.index, columns=data.columns)
+
+    output_file = os.path.join(output_dir, f'time_domain{file_suffix}.png')
 
     # Plot all 32 channels
     plt.figure(figsize=(20, 15))
@@ -62,7 +96,7 @@ def plot_time_domain(subject_series):
         else:
             ax.set_xticks([])
 
-    plt.suptitle(f'Time Domain Signals for {subject_series}', fontsize=24)
+    plt.suptitle(f'Time Domain Signals for {subject_series}{title_suffix}', fontsize=24)
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     
     # Save the plot
@@ -70,8 +104,9 @@ def plot_time_domain(subject_series):
     print(f"Plot saved to {output_file}")
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Plot EEG time domain signals.')
+    parser = argparse.ArgumentParser(description='Plot EEG time domain signals, with optional filtering.')
     parser.add_argument('subject_series', type=str, help='Subject and series identifier (e.g., subj1_series1)')
+    parser.add_argument('--freqs', nargs='+', type=float, help='Cutoff frequency/frequencies. 1 value for lowpass, 2 for bandpass.')
     args = parser.parse_args()
 
-    plot_time_domain(args.subject_series)
+    plot_time_domain(args.subject_series, args.freqs)

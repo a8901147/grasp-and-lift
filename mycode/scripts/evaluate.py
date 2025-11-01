@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import joblib
@@ -6,6 +5,7 @@ import os
 import sys
 from sklearn.metrics import roc_auc_score
 from tqdm import tqdm
+from feature_engineering import FilterBank, CSPFeatureExtractor
 
 # --- Configuration: Data Source ---
 # Dynamically find the project root and build the path to the data directory
@@ -57,19 +57,21 @@ def load_data_for_series(subject, series_list, event, channel, verbose=True):
 
 
 
-def evaluate_model(subject_id, channel, event, model_path, verbose=True):
+def evaluate_model(subjects, channel, event, model_path, verbose=True):
 
     """
 
     Loads a pre-trained model and evaluates it, returning the AUC score.
 
+    Can handle single or multiple subjects for evaluation.
+
     
 
     Args:
 
-        subject_id (str): The identifier for the subject (for loading validation data).
+        subjects (list): A list of subject IDs for loading validation data.
 
-        channel (str): The EEG channel to use as a feature.
+        channel (str): The EEG channel(s) to use. 'all' for all channels.
 
         event (str): The target event for prediction.
 
@@ -87,7 +89,7 @@ def evaluate_model(subject_id, channel, event, model_path, verbose=True):
 
     if verbose:
 
-        print(f"--- Evaluating: Subj {subject_id}, Channel {channel}, Event {event} ---")
+        print(f"--- Evaluating: Subj(s) {subjects}, Channel {channel}, Event {event} ---")
 
 
 
@@ -101,33 +103,57 @@ def evaluate_model(subject_id, channel, event, model_path, verbose=True):
 
 
 
-    # 2. Load Validation Data
+    # 2. Load Validation Data for all specified subjects
 
-    df_valid = load_data_for_series(subject_id, VALID_SERIES, event, channel, verbose=verbose)
+    all_valid_dfs = []
+
+    channels_to_load = ALL_CHANNELS if channel == 'all' else [channel]
+
+    channel_desc = 'all' if channel == 'all' else channel # For progress bar
+
+
+
+    for subject_id in subjects:
+
+        df_valid_sub = load_data_for_series(subject_id, VALID_SERIES, event, channel_desc, verbose=verbose)
+
+        all_valid_dfs.append(df_valid_sub)
+
+    
+
+    df_valid = pd.concat(all_valid_dfs)
 
 
 
     # 3. Prepare features (X) and target (y)
 
-    if channel not in df_valid.columns:
+    for col in channels_to_load + [event]:
 
-        raise ValueError(f"Channel '{channel}' not found in the validation data.")
+        if col not in df_valid.columns:
 
-    if event not in df_valid.columns:
+            raise ValueError(f"Column '{col}' not found in the validation data.")
 
-        raise ValueError(f"Event '{event}' not found in the validation data.")
+            
 
-        
-
-    X_valid = df_valid[[channel]]
+    X_valid = df_valid[channels_to_load]
 
     y_valid = df_valid[event]
 
 
 
-    # 4. Evaluate Model and return AUC score
+    # If CSP is part of the pipeline, it needs event_data for transform
 
-    valid_probs = model_pipeline.predict_proba(X_valid)[:, 1]
+    # We assume the pipeline is already fitted.
+
+    if 'csp' in model_pipeline.named_steps and isinstance(model_pipeline.named_steps['csp'], CSPFeatureExtractor):
+
+        # For transform, CSPFeatureExtractor expects y as event_data
+
+        valid_probs = model_pipeline.predict_proba(X_valid, y=y_valid)[:, 1]
+
+    else:
+
+        valid_probs = model_pipeline.predict_proba(X_valid)[:, 1]
 
     auc_score = roc_auc_score(y_valid, valid_probs)
 
@@ -135,7 +161,7 @@ def evaluate_model(subject_id, channel, event, model_path, verbose=True):
 
     if verbose:
 
-        print(f"--- AUC for Subj {subject_id}, Channel {channel}, Event {event}: {auc_score:.4f} ---")
+        print(f"--- AUC for Subj(s) {subjects}, Channel {channel}, Event {event}: {auc_score:.4f} ---")
 
     return auc_score
 import argparse
@@ -189,7 +215,7 @@ def main():
     model_path = os.path.join(model_dir, f"subj{args.subject}_{event_name.lower()}_{channel_name}_model.joblib")
     
     print(f"(Input corrected to: Subject {args.subject}, Channel {channel_name}, Event {event_name})")
-    evaluate_model(args.subject, channel_name, event_name, model_path)
+    evaluate_model([args.subject], channel_name, event_name, model_path)
 
 if __name__ == '__main__':
     main()

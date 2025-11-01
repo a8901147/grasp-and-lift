@@ -8,7 +8,7 @@
 
 `run_analysis.py` 是整個專案的中央執行引擎。所有的實驗流程，包括模型訓練、評估、特徵工程以及超參數最佳化，都是由這個腳本統一調度的。
 
-**直接執行此腳本通常不是推薦的做法。** 為了確保實驗的可重複性與一致性，請一律使用位於 `mycode/experiment/` 各個子目錄下的 `run_exp.sh` 啟動腳本來間接執行它。
+**直接執行此腳本通常不是推薦的做法。** 為了確保實驗的可重複性與一致性，請一律使用位於 `mycode/experiment/` 各個子目錄下的 `run_exp1.sh` 啟動腳本來間接執行它。
 
 ---
 
@@ -18,7 +18,7 @@
 
 ### 如何使用
 
-1.  **複製實驗模板**: 從 `mycode/scripts/run_exp_template.sh` 複製一份到新的實驗目錄（例如 `mycode/experiment/my_new_exp/`），並將其命名為 `run_exp.sh`。
+1.  **複製實驗模板**: 從 `mycode/scripts/run_exp2_template.sh` 複製一份到新的實驗目錄（例如 `mycode/experiment/my_new_exp/`），並將其命名為 `run_exp2.sh`。
 2.  **配置 `run_exp.sh`**:
     *   修改 `FEATURE_EXTRACTOR` 變數來指定要使用的特徵工程方法（例如 `""` 代表原始信號，`"filterbank"` 代表 Filter Bank 特徵）。
 3.  **執行實驗**:

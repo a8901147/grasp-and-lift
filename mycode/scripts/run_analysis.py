@@ -162,20 +162,24 @@ def print_channel_ranking(all_results, event):
     
     print("###########################################################\n")
 
-def run_single_evaluation(subject, channel, event, model_dir, feature_extractor, custom_freqs, verbose):
+def run_single_evaluation(subjects, channel, event, model_dir, feature_extractor, custom_freqs, verbose):
     """
     Refactored logic to train and evaluate a single model.
+    Can handle single or multiple subjects.
     """
-    model_filename = f"subj{subject}_{event.lower()}_{channel}_model.joblib"
+    # In multichannel mode, 'subjects' will be a list, but we train one model.
+    # We'll use the first subject for naming conventions.
+    model_filename = f"subj{subjects[0]}_{event.lower()}_{channel}_model.joblib"
     model_path = os.path.join(model_dir, model_filename)
     
-    train_model(subject, channel, event, model_dir, 
+    train_model(subjects, channel, event, model_dir, 
                 feature_extractor=feature_extractor,
                 filterbank_custom_freqs=custom_freqs,
                 model_filename=model_filename,
                 verbose=verbose)
     
-    auc_score = evaluate_model(subject, channel, event, model_path, verbose=verbose)
+    # Evaluate on the same subjects used for training
+    auc_score = evaluate_model(subjects, channel, event, model_path, verbose=verbose)
     return auc_score
 
 # --- Optimization Mode Functions ---
@@ -262,7 +266,8 @@ def main():
     parser.add_argument('--output_dir', type=str, default='./out',
                         help='Directory to save the output plots.')
     parser.add_argument('--model_dir', default='./out', help="Directory to save models.")
-    parser.add_argument('--feature-extractor', default='', choices=['filterbank', ''], help="Specify the feature extractor to use (e.g., 'filterbank').")
+    parser.add_argument('--feature-extractor', default='', help="Specify a comma-separated list of feature extractors (e.g., 'FilterBank,CSP').")
+    parser.add_argument('--processing-mode', default='single_channel', choices=['single_channel', 'multichannel'], help="Specify the channel processing mode.")
     parser.add_argument('--filterbank-freqs', type=str, default=None, help="Custom filterbank frequencies as a comma-separated string (e.g., '0.1,1,3,5,7,10,14,20,28,38').")
     
     # --- New arguments for optimization ---
@@ -331,16 +336,33 @@ def main():
 
     all_results = {}
 
-    for subj in subjects:
-        subj_results = {}
-        for chan in tqdm(channels, desc=f"Processing Subject {subj} for event {event}", unit="channel"):
-            auc_score = run_single_evaluation(subj, chan, event, ARGS.model_dir, ARGS.feature_extractor, custom_freqs, verbose)
-            subj_results[chan] = auc_score
-        all_results[f"subj{subj}"] = subj_results
+    if ARGS.processing_mode == 'multichannel':
+        print("--- Running in Multichannel Mode ---")
+        # In this mode, we expect 'channel' to be 'all' but we process them jointly
+        if ARGS.channel.lower() != 'all':
+            print("Warning: In multichannel mode, the 'channel' argument is expected to be 'all'. Processing all channels jointly.")
+        
+        # A single evaluation for all channels
+        auc_score = run_single_evaluation(subjects, 'all', event, ARGS.model_dir, ARGS.feature_extractor, custom_freqs, verbose)
+        
+        # Store the single result in a way that fits the existing structure
+        # We'll use a placeholder name like 'all_joint' for the channel
+        for subj in subjects:
+            all_results[f"subj{subj}"] = {'all_joint': auc_score}
+        
+        print(f"  -> Average AUC for all subjects (multichannel): {auc_score:.4f}")
 
-        if subj_results:
-            avg_auc = sum(subj_results.values()) / len(subj_results)
-            print(f"  -> Subject {subj} Average AUC: {avg_auc:.4f}")
+    else: # single_channel mode
+        for subj in subjects:
+            subj_results = {}
+            for chan in tqdm(channels, desc=f"Processing Subject {subj} for event {event}", unit="channel"):
+                auc_score = run_single_evaluation([subj], chan, event, ARGS.model_dir, ARGS.feature_extractor, custom_freqs, verbose)
+                subj_results[chan] = auc_score
+            all_results[f"subj{subj}"] = subj_results
+
+            if subj_results:
+                avg_auc = sum(subj_results.values()) / len(subj_results)
+                print(f"  -> Subject {subj} Average AUC: {avg_auc:.4f}")
 
     print_channel_ranking(all_results, event)
     
