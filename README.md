@@ -13,7 +13,7 @@ Requirement
 
 Plan
 - [Development Plan](doc/plan/development_plan.md)
-- [Project Requirements Interpretation and Core Challenge Analysis]((doc/plan/requirement_analysis.md)
+- [Project Requirements Interpretation and Core Challenge Analysis](doc/plan/requirement_analysis.md)
 
 Background Knowledge
 - [Butterworth Filters in EEG Signal Processing](doc/background_knowledge/Butterworth_filter.md)
